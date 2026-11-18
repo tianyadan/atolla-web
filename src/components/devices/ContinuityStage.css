@@ -1,15 +1,23 @@
 .continuity {
+  --continuity-phone-w: 12.25rem;
+  --continuity-overlap: 2.75rem;
   position: relative;
   width: 100%;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 0;
   padding: 1rem 0 1.5rem;
   min-height: 22rem;
+  overflow: visible;
 }
 
 .continuity__mac {
-  width: min(100%, 52rem);
-  transform: translate3d(-4%, 0, 0) scale(0.96);
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  max-width: calc(100% - (var(--continuity-phone-w) - var(--continuity-overlap)));
+  transform: translate3d(-2%, 0, 0) scale(0.97);
   opacity: 0.35;
   transition:
     transform 0.95s cubic-bezier(0.22, 1, 0.36, 1),
@@ -18,12 +26,14 @@
 }
 
 .continuity__phone {
-  position: absolute;
-  right: max(0%, calc(50% - 28rem));
-  bottom: -0.5rem;
-  width: min(34%, 15.5rem);
+  position: relative;
+  flex: 0 0 var(--continuity-phone-w);
+  width: var(--continuity-phone-w);
+  margin-left: calc(var(--continuity-overlap) * -1);
+  /* 抬高一点叠住屏幕右下角边框，但不压住主内容区 */
+  margin-bottom: 1.6rem;
   z-index: 3;
-  transform: translate3d(18%, 8%, 0) scale(0.92);
+  transform: translate3d(16%, 10%, 0) scale(0.92);
   opacity: 0.25;
   transition:
     transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.08s,
@@ -45,30 +55,63 @@
   width: 100%;
 }
 
-@media (max-width: 900px) {
+.auth-sync .continuity {
+  --continuity-phone-w: 11.15rem;
+  --continuity-overlap: 2.35rem;
+  padding-bottom: 1.75rem;
+}
+
+.auth-sync .continuity__phone {
+  margin-bottom: 1.85rem;
+}
+
+@media (max-width: 1280px) {
   .continuity {
-    display: flex;
-    flex-direction: column;
-    gap: 1.75rem;
-    align-items: center;
-    padding-bottom: 0.5rem;
+    --continuity-phone-w: 11.15rem;
+    --continuity-overlap: 2.5rem;
   }
 
-  .continuity__mac {
+  .auth-sync .continuity {
+    --continuity-phone-w: 10.35rem;
+    --continuity-overlap: 2.15rem;
+  }
+
+  .auth-sync .continuity__phone {
+    margin-bottom: 1.7rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .continuity,
+  .auth-sync .continuity {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+    padding: 0.5rem 0;
+    --continuity-phone-w: min(72%, 16.5rem);
+    --continuity-overlap: 0rem;
+  }
+
+  .continuity__mac,
+  .auth-sync .continuity__mac {
     width: 100%;
+    max-width: 100%;
     transform: translate3d(0, 24px, 0);
   }
 
-  .continuity__phone {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    width: min(72%, 16.5rem);
+  .continuity__phone,
+  .auth-sync .continuity__phone {
+    width: var(--continuity-phone-w);
+    flex-basis: auto;
+    margin-left: 0;
+    margin-bottom: 0;
     transform: translate3d(0, 24px, 0);
   }
 
   .continuity.is-in .continuity__mac,
-  .continuity.is-in .continuity__phone {
+  .continuity.is-in .continuity__phone,
+  .auth-sync .continuity.is-in .continuity__mac,
+  .auth-sync .continuity.is-in .continuity__phone {
     transform: translate3d(0, 0, 0);
   }
 }

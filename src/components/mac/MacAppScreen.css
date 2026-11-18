@@ -327,6 +327,14 @@
   gap: 0.85rem;
 }
 
+/* 授权卡靠左收窄， Continuity 右缘重叠时按钮仍完整可点 */
+.mac-app__auth-card,
+.mac-app__cmd-done {
+  max-width: min(100%, 26.5rem);
+  margin-right: auto;
+  align-self: flex-start;
+}
+
 .mac-app__msg--agent p,
 .mac-app__bubble p {
   margin: 0.35rem 0 0;
