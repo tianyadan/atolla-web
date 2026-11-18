@@ -1,0 +1,319 @@
+.iphone-chat {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #f2f3f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans SC', 'Segoe UI', sans-serif;
+  color: #111;
+}
+
+.iphone-chat__top {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.55rem;
+  align-items: center;
+  padding: 0.35rem 0.85rem 0.55rem;
+  background: rgba(242, 243, 245, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.iphone-chat__sidebar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.55rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
+  display: grid;
+  place-content: center;
+  gap: 0.22rem;
+  padding: 0;
+}
+
+.iphone-chat__sidebar span {
+  display: block;
+  width: 0.18rem;
+  height: 0.85rem;
+  border-radius: 2px;
+  background: #222;
+  box-shadow: 0.38rem 0 0 #222;
+}
+
+.iphone-chat__name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.iphone-chat__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.15rem;
+  min-height: 1.15rem;
+}
+
+.iphone-chat__engine {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.08rem 0.42rem;
+  border-radius: 999px;
+  background: #ebe4ff;
+  color: #6b4ccf;
+  font-size: 0.62rem;
+  font-weight: 600;
+  animation: engine-fade 0.45s ease;
+}
+
+.iphone-chat__group {
+  font-size: 0.68rem;
+  color: #8a8f98;
+}
+
+.iphone-chat__feed {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0.55rem 0.75rem 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.iphone-chat__commands {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iphone-chat__cmd {
+  animation: cmd-rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.iphone-chat__cmd-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.28rem;
+  font-size: 0.68rem;
+  color: #8b9099;
+}
+
+.iphone-chat__rule {
+  padding: 0.05rem 0.38rem;
+  border-radius: 999px;
+  background: #e8eaee;
+  color: #6f7580;
+  font-size: 0.58rem;
+  font-weight: 500;
+}
+
+.iphone-chat__cmd-bar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.42rem 0.45rem 0.42rem 0.55rem;
+  border-radius: 0.7rem;
+  background: #dff5e4;
+}
+
+.iphone-chat__play {
+  font-size: 0.55rem;
+  color: #111;
+  line-height: 1;
+}
+
+.iphone-chat__path {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.62rem;
+  color: #1b1f24;
+}
+
+.iphone-chat__safe {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.18rem 0.45rem;
+  border-radius: 999px;
+  background: #1f9d4a;
+  color: #06140b;
+  font-size: 0.62rem;
+  font-weight: 700;
+  transform-origin: center;
+}
+
+.iphone-chat__cmd.is-pop .iphone-chat__safe {
+  animation: badge-pop 0.42s cubic-bezier(0.22, 1.4, 0.36, 1);
+}
+
+.iphone-chat__bubble {
+  background: #fff;
+  border-radius: 0.95rem;
+  padding: 0.7rem 0.75rem 0.8rem;
+  box-shadow: 0 8px 24px rgba(20, 24, 32, 0.06);
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.iphone-chat__bubble.is-in {
+  animation: bubble-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.iphone-chat__bubble-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.iphone-chat__who {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.iphone-chat__copy {
+  border: 0;
+  background: transparent;
+  color: #9aa0a8;
+  font-size: 0.68rem;
+  padding: 0.15rem 0.2rem;
+}
+
+.iphone-chat__body {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #222;
+  min-height: 2.4em;
+}
+
+.iphone-chat__caret {
+  display: inline-block;
+  width: 0.08rem;
+  height: 0.85em;
+  margin-left: 1px;
+  background: #333;
+  vertical-align: -0.1em;
+  animation: caret-blink 0.9s steps(1) infinite;
+}
+
+.iphone-chat__composer {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.45rem;
+  align-items: center;
+  padding: 0.45rem 0.7rem 1.55rem;
+  background: #f2f3f5;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.iphone-chat__round,
+.iphone-chat__send {
+  width: 2.05rem;
+  height: 2.05rem;
+  border-radius: 50%;
+  border: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.iphone-chat__round {
+  background: #e6e8ec;
+  color: #222;
+}
+
+.iphone-chat__send {
+  background: #c5c8ce;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.iphone-chat__input {
+  height: 2.05rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  padding: 0 0.85rem;
+  color: #9aa0a8;
+  font-size: 0.78rem;
+}
+
+@keyframes cmd-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes badge-pop {
+  0% {
+    transform: scale(0.7);
+  }
+  55% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes bubble-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes engine-fade {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iphone-chat__cmd,
+  .iphone-chat__bubble,
+  .iphone-chat__engine,
+  .iphone-chat__cmd.is-pop .iphone-chat__safe,
+  .iphone-chat__caret {
+    animation: none !important;
+  }
+
+  .iphone-chat__bubble {
+    opacity: 1;
+    transform: none;
+  }
+}
