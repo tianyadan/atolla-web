@@ -1,0 +1,47 @@
+.jelly-avatar {
+  display: inline-block;
+  flex-shrink: 0;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  vertical-align: middle;
+  will-change: transform;
+}
+
+.jelly-avatar--bob {
+  animation: jelly-bob 3s ease-in-out infinite;
+}
+
+.jelly-avatar--jump {
+  animation: jelly-jump 0.6s ease-in-out infinite;
+}
+
+@keyframes jelly-bob {
+  0%,
+  100% {
+    transform: translateY(var(--jelly-cell, 1px));
+  }
+  50% {
+    transform: translateY(calc(var(--jelly-cell, 1px) * -1));
+  }
+}
+
+@keyframes jelly-jump {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(calc(var(--jelly-cell, 1px) * -3));
+  }
+  70% {
+    transform: translateY(calc(var(--jelly-cell, 1px) * -1));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jelly-avatar--bob,
+  .jelly-avatar--jump {
+    animation: none;
+  }
+}
