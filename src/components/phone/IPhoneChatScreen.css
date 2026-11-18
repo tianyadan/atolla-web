@@ -1,11 +1,13 @@
 .iphone-chat {
+  position: relative;
   flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
   background: #f2f3f5;
-  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans SC', 'Segoe UI', sans-serif;
+  font-family: 'Noto Sans SC', 'Outfit', system-ui, -apple-system, sans-serif;
   color: #111;
+  overflow: hidden;
 }
 
 .iphone-chat__top {
@@ -17,6 +19,7 @@
   background: rgba(242, 243, 245, 0.92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  z-index: 2;
 }
 
 .iphone-chat__sidebar {
@@ -27,23 +30,29 @@
   background: #fff;
   display: grid;
   place-content: center;
-  gap: 0.22rem;
   padding: 0;
+  color: #222;
 }
 
-.iphone-chat__sidebar span {
-  display: block;
-  width: 0.18rem;
-  height: 0.85rem;
-  border-radius: 2px;
-  background: #222;
-  box-shadow: 0.38rem 0 0 #222;
+.iphone-chat__title-block {
+  min-width: 0;
+}
+
+/* 标题整段统一用 Noto Sans SC，避免拉丁字母被 Outfit 替换成异形字形 */
+.iphone-chat__name,
+.iphone-chat__who-name {
+  font-family: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0, 'clig' 0, 'calt' 0;
+  font-synthesis: none;
+  letter-spacing: 0;
 }
 
 .iphone-chat__name {
   font-size: 0.95rem;
   font-weight: 700;
   line-height: 1.2;
+  color: #111;
 }
 
 .iphone-chat__meta {
@@ -63,6 +72,7 @@
   color: #6b4ccf;
   font-size: 0.62rem;
   font-weight: 600;
+  font-family: 'Outfit', 'Noto Sans SC', system-ui, sans-serif;
   animation: engine-fade 0.45s ease;
 }
 
@@ -74,20 +84,20 @@
 .iphone-chat__feed {
   flex: 1;
   min-height: 0;
-  overflow: hidden;
-  padding: 0.55rem 0.75rem 0.35rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-}
-
-.iphone-chat__commands {
+  overflow: auto;
+  padding: 0.55rem 0.75rem 0.45rem;
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.iphone-chat__hint {
+  margin: 0.5rem 0 0;
+  text-align: center;
+  color: #9aa0a8;
+  font-size: 0.72rem;
 }
 
 .iphone-chat__cmd {
@@ -110,6 +120,7 @@
   color: #6f7580;
   font-size: 0.58rem;
   font-weight: 500;
+  font-family: 'Outfit', ui-monospace, monospace;
 }
 
 .iphone-chat__cmd-bar {
@@ -155,6 +166,19 @@
   animation: badge-pop 0.42s cubic-bezier(0.22, 1.4, 0.36, 1);
 }
 
+.iphone-chat__user-bubble {
+  align-self: flex-end;
+  max-width: 82%;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.95rem 0.95rem 0.25rem 0.95rem;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  animation: cmd-rise 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  word-break: break-word;
+}
+
 .iphone-chat__bubble {
   background: #fff;
   border-radius: 0.95rem;
@@ -197,7 +221,8 @@
   font-size: 0.78rem;
   line-height: 1.45;
   color: #222;
-  min-height: 2.4em;
+  min-height: 1.2em;
+  word-break: break-word;
 }
 
 .iphone-chat__caret {
@@ -218,6 +243,7 @@
   padding: 0.45rem 0.7rem 1.55rem;
   background: #f2f3f5;
   border-top: 1px solid rgba(0, 0, 0, 0.04);
+  z-index: 2;
 }
 
 .iphone-chat__round,
@@ -242,18 +268,34 @@
   color: #fff;
   font-size: 0.95rem;
   font-weight: 700;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.iphone-chat__send.is-active {
+  background: #3b82f6;
+}
+
+.iphone-chat__send:disabled {
+  opacity: 1;
 }
 
 .iphone-chat__input {
   height: 2.05rem;
+  width: 100%;
   border-radius: 999px;
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.06);
-  display: flex;
-  align-items: center;
   padding: 0 0.85rem;
-  color: #9aa0a8;
+  color: #111;
   font-size: 0.78rem;
+  font-family: inherit;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.iphone-chat__input::placeholder {
+  color: #9aa0a8;
 }
 
 @keyframes cmd-rise {
@@ -308,7 +350,8 @@
   .iphone-chat__bubble,
   .iphone-chat__engine,
   .iphone-chat__cmd.is-pop .iphone-chat__safe,
-  .iphone-chat__caret {
+  .iphone-chat__caret,
+  .iphone-chat__user-bubble {
     animation: none !important;
   }
 

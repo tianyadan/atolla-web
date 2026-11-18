@@ -149,20 +149,10 @@ export default function App() {
         <div className="section__inner section__inner--split">
           <FadeContent blur duration={0.9} threshold={0.15} className="section__copy-pane">
             <p className="section__eyebrow">iPhone 应用</p>
-            <ScrollReveal
-              containerClassName="section__title-wrap"
-              textClassName="section__title"
-              baseOpacity={0.12}
-              enableBlur
-              blurStrength={5}
-              baseOffset={24}
-              stagger={0.04}
-              mode="enter"
-              effect="rise"
-              duration={0.7}
-            >
-              手机与网页，一起协作
-            </ScrollReveal>
+            <h2 id="iphone-title" className="section__title section__title--balanced">
+              手机与网页，
+              <span className="text-keep">一起协作</span>
+            </h2>
             <p className="section__lede">
               Atolla 提供 iPhone 应用，与网页平台协同工作。在手机上查看团队、命令与智能体回复。
             </p>

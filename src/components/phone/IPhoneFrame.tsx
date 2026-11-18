@@ -1,13 +1,19 @@
-import type { ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import './IPhoneFrame.css'
 
 export type IPhoneFrameProps = {
   children: ReactNode
-  /** 状态栏时间 */
+  /** 若传入则固定显示；默认用观众本地时间并每分钟更新 */
   time?: string
   className?: string
-  /** 无障碍标签 */
   label?: string
+}
+
+/** 格式化本地 HH:MM */
+function formatLocalTime(date = new Date()) {
+  const h = String(date.getHours()).padStart(2, '0')
+  const m = String(date.getMinutes()).padStart(2, '0')
+  return `${h}:${m}`
 }
 
 /**
@@ -16,10 +22,22 @@ export type IPhoneFrameProps = {
  */
 export default function IPhoneFrame({
   children,
-  time = '21:37',
+  time,
   className = '',
   label = 'iPhone 应用预览',
 }: IPhoneFrameProps) {
+  const [liveTime, setLiveTime] = useState(() => formatLocalTime())
+
+  useEffect(() => {
+    if (time) return undefined
+    const tick = () => setLiveTime(formatLocalTime())
+    tick()
+    const id = window.setInterval(tick, 15_000)
+    return () => window.clearInterval(id)
+  }, [time])
+
+  const displayTime = time ?? liveTime
+
   return (
     <figure className={`iphone ${className}`.trim()} aria-label={label}>
       <div className="iphone__shell">
@@ -29,7 +47,7 @@ export default function IPhoneFrame({
           </div>
 
           <div className="iphone__status" aria-hidden="true">
-            <span className="iphone__time">{time}</span>
+            <span className="iphone__time">{displayTime}</span>
             <div className="iphone__status-right">
               <span className="iphone__signal" />
               <span className="iphone__network">5G</span>

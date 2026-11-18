@@ -1,0 +1,298 @@
+.agent-drawer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.agent-drawer.is-open {
+  pointer-events: auto;
+}
+
+.agent-drawer__overlay {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: rgba(15, 18, 24, 0.38);
+  opacity: 0;
+  /* 与面板同曲线/时长，遮罩淡入淡出同步 */
+  transition: opacity 0.55s cubic-bezier(0.32, 0.72, 0, 1);
+  cursor: pointer;
+}
+
+.agent-drawer.is-open .agent-drawer__overlay {
+  opacity: 1;
+}
+
+.agent-drawer__panel {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 75%;
+  background: #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  transform: translate3d(-104%, 0, 0);
+  /* iOS 风格阻尼弹簧滑入 */
+  transition: transform 0.55s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: 8px 0 28px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  will-change: transform;
+}
+
+.agent-drawer.is-open .agent-drawer__panel {
+  transform: translate3d(0, 0, 0);
+}
+
+.agent-drawer__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.85rem 0.35rem;
+  font-family: 'Outfit', 'Noto Sans SC', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #111;
+}
+
+.agent-drawer__logo {
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 0.3rem;
+  background: #111;
+  object-fit: contain;
+  padding: 0.12rem;
+  box-sizing: border-box;
+}
+
+.agent-drawer__cards {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.35rem 0.7rem 0.55rem;
+}
+
+.agent-drawer__card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.55rem;
+  align-items: center;
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 0;
+  border-radius: 0.85rem;
+  background: #fff;
+  text-align: left;
+  color: #111;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+}
+
+.agent-drawer__card-icon {
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 0.45rem;
+  background: #eef0f3;
+  display: grid;
+  place-items: center;
+  font-size: 0.78rem;
+  color: #333;
+}
+
+.agent-drawer__card-body {
+  display: grid;
+  gap: 0.12rem;
+  min-width: 0;
+}
+
+.agent-drawer__card-body strong {
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: 'Outfit', 'Noto Sans SC', system-ui, sans-serif;
+}
+
+.agent-drawer__server {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-size: 0.62rem;
+  color: #6b7280;
+}
+
+.agent-drawer__server i {
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.18);
+}
+
+.agent-drawer__chev {
+  color: #9aa0a8;
+  font-size: 0.85rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.agent-drawer__chev.is-open {
+  transform: rotate(0deg);
+}
+
+.agent-drawer__group-head .agent-drawer__chev:not(.is-open) {
+  transform: rotate(-90deg);
+}
+
+.agent-drawer__groups {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0.15rem 0.55rem 0.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.agent-drawer__group-head {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.35rem;
+  align-items: center;
+  padding: 0.45rem 0.35rem;
+  border: 0;
+  background: transparent;
+  color: #6b7280;
+  font-size: 0.72rem;
+  text-align: left;
+}
+
+.agent-drawer__group-name {
+  font-family: 'Noto Sans SC', 'Outfit', system-ui, sans-serif;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.agent-drawer__count {
+  font-variant-numeric: tabular-nums;
+}
+
+.agent-drawer__agents {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0.25rem;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.agent-drawer__agent {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.42rem 0.45rem;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  background: transparent;
+  text-align: left;
+  color: #111;
+}
+
+.agent-drawer__agent.is-selected {
+  background: #f0ebff;
+  border-color: rgba(139, 112, 220, 0.28);
+}
+
+.agent-drawer__agent-meta {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.agent-drawer__agent-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+  letter-spacing: 0;
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0, 'clig' 0, 'calt' 0;
+  font-synthesis: none;
+}
+
+.agent-drawer__agent-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-size: 0.62rem;
+  color: #9aa0a8;
+}
+
+.agent-drawer__agent-status i {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: #c4c8ce;
+}
+
+.agent-drawer__badge {
+  min-width: 1.35rem;
+  height: 1.15rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: #eceff3;
+  color: #6b7280;
+  font-size: 0.7rem;
+  display: grid;
+  place-items: center;
+}
+
+.agent-drawer__footer {
+  padding: 0.45rem 0.7rem 1.35rem;
+}
+
+.agent-drawer__user {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.55rem;
+  align-items: center;
+  padding: 0.55rem 0.65rem;
+  border-radius: 0.85rem;
+  background: #fff;
+}
+
+.agent-drawer__user-avatar {
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: #e8eaee;
+  display: grid;
+  place-items: center;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.agent-drawer__user-meta {
+  display: grid;
+  gap: 0.08rem;
+  min-width: 0;
+}
+
+.agent-drawer__user-meta strong {
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.agent-drawer__user-meta span {
+  font-size: 0.62rem;
+  color: #8a8f98;
+  font-family: 'Outfit', 'Noto Sans SC', system-ui, sans-serif;
+}
+
+.agent-drawer__gear {
+  color: #9aa0a8;
+  font-size: 0.95rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-drawer__overlay,
+  .agent-drawer__panel {
+    transition: none;
+  }
+}

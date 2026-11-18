@@ -127,6 +127,15 @@
   color: var(--ink);
 }
 
+.section__title--balanced {
+  text-wrap: balance;
+  word-break: keep-all;
+}
+
+.text-keep {
+  white-space: nowrap;
+}
+
 .section__lede {
   max-width: 36rem;
   margin: 0 0 3rem;
