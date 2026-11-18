@@ -10,10 +10,10 @@ export default function SiteNav() {
       </a>
       <nav className="site-nav__links" aria-label="页面导航">
         <a href="#collaborate">协作</a>
+        <a href="#devices">多端</a>
+        <a href="#authorize">授权</a>
         <a href="#engines">引擎</a>
         <a href="#avatars">头像</a>
-        <a href="#iphone">手机</a>
-        <a href="#governance">治理</a>
         <a href="#cta" className="site-nav__cta">
           试用
         </a>

@@ -1,0 +1,83 @@
+.continuity {
+  position: relative;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 1rem 0 1.5rem;
+  min-height: 22rem;
+}
+
+.continuity__mac {
+  width: min(100%, 52rem);
+  transform: translate3d(-4%, 0, 0) scale(0.96);
+  opacity: 0.35;
+  transition:
+    transform 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.85s ease;
+  z-index: 1;
+}
+
+.continuity__phone {
+  position: absolute;
+  right: max(0%, calc(50% - 28rem));
+  bottom: -0.5rem;
+  width: min(34%, 15.5rem);
+  z-index: 3;
+  transform: translate3d(18%, 8%, 0) scale(0.92);
+  opacity: 0.25;
+  transition:
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.08s,
+    opacity 0.9s ease 0.08s;
+  filter: drop-shadow(0 22px 40px rgba(0, 0, 0, 0.55));
+}
+
+.continuity.is-in .continuity__mac {
+  transform: translate3d(0, 0, 0) scale(1);
+  opacity: 1;
+}
+
+.continuity.is-in .continuity__phone {
+  transform: translate3d(0, 0, 0) scale(1);
+  opacity: 1;
+}
+
+.continuity__phone .iphone {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .continuity {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    align-items: center;
+    padding-bottom: 0.5rem;
+  }
+
+  .continuity__mac {
+    width: 100%;
+    transform: translate3d(0, 24px, 0);
+  }
+
+  .continuity__phone {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: min(72%, 16.5rem);
+    transform: translate3d(0, 24px, 0);
+  }
+
+  .continuity.is-in .continuity__mac,
+  .continuity.is-in .continuity__phone {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .continuity__mac,
+  .continuity__phone {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -402,9 +402,29 @@
   font-size: 0.85rem;
 }
 
-/* —— iPhone collab —— */
-.section--iphone {
-  align-items: stretch;
+/* —— Multi-device / Auth Continuity —— */
+.section--devices,
+.section--auth {
+  align-items: flex-start;
+  min-height: auto;
+  padding-top: clamp(3.5rem, 9vh, 6.5rem);
+  padding-bottom: clamp(3.5rem, 9vh, 6.5rem);
+}
+
+.section__inner--devices {
+  width: var(--content);
+  margin: 0 auto;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.section__copy-block {
+  max-width: 40rem;
+}
+
+.section__lede--wide {
+  max-width: 40rem;
+  margin-bottom: 1.25rem;
 }
 
 .section__inner--split {
@@ -639,12 +659,20 @@
     justify-items: center;
   }
 
-  .section__copy-pane {
+  .section__copy-pane,
+  .section__copy-block {
     text-align: center;
   }
 
-  .section__copy-pane .section__lede {
+  .section__copy-pane .section__lede,
+  .section__copy-block .section__lede {
     margin-inline: auto;
+  }
+
+  .section--devices,
+  .section--auth {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 }
 

@@ -12,7 +12,7 @@
   --font-body: 'Noto Sans SC', 'Outfit', sans-serif;
   --nav-h: 4.25rem;
   --section-pad: clamp(4.5rem, 12vh, 8.5rem);
-  --content: min(68rem, calc(100% - 2.5rem));
+  --content: min(72rem, calc(100% - 2.5rem));
 }
 
 *,

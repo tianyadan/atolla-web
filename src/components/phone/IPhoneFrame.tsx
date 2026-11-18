@@ -7,6 +7,10 @@ export type IPhoneFrameProps = {
   time?: string
   className?: string
   label?: string
+  /** Dynamic Island 展开为通知胶囊 */
+  islandExpanded?: boolean
+  islandTitle?: string
+  islandSubtitle?: string
 }
 
 /** 格式化本地 HH:MM */
@@ -25,6 +29,9 @@ export default function IPhoneFrame({
   time,
   className = '',
   label = 'iPhone 应用预览',
+  islandExpanded = false,
+  islandTitle,
+  islandSubtitle,
 }: IPhoneFrameProps) {
   const [liveTime, setLiveTime] = useState(() => formatLocalTime())
 
@@ -42,8 +49,27 @@ export default function IPhoneFrame({
     <figure className={`iphone ${className}`.trim()} aria-label={label}>
       <div className="iphone__shell">
         <div className="iphone__bezel">
-          <div className="iphone__island" aria-hidden="true">
-            <span className="iphone__island-cam" />
+          <div
+            className={`iphone__island ${islandExpanded ? 'is-expanded' : ''}`}
+            aria-hidden={!islandExpanded}
+          >
+            {islandExpanded ? (
+              <div className="iphone__island-note">
+                <img
+                  src="/brand-jellyfish-white.png"
+                  alt=""
+                  width={16}
+                  height={16}
+                  className="iphone__island-logo"
+                />
+                <div className="iphone__island-copy">
+                  <strong>{islandTitle ?? '全栈'}</strong>
+                  <span>{islandSubtitle ?? '请求执行命令'}</span>
+                </div>
+              </div>
+            ) : (
+              <span className="iphone__island-cam" />
+            )}
           </div>
 
           <div className="iphone__status" aria-hidden="true">

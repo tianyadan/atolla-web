@@ -1,0 +1,232 @@
+.iphone-auth {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #0b1020;
+  overflow: hidden;
+  font-family: 'Noto Sans SC', system-ui, sans-serif;
+  color: #111;
+}
+
+.iphone-auth__wallpaper {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 15%, rgba(90, 140, 255, 0.35), transparent 55%),
+    radial-gradient(ellipse 60% 45% at 85% 30%, rgba(180, 90, 220, 0.22), transparent 50%),
+    linear-gradient(165deg, #1a2440 0%, #0b1020 55%, #06080f 100%);
+}
+
+.iphone-auth__banner {
+  position: relative;
+  z-index: 2;
+  margin: 2.6rem 0.7rem 0;
+  padding: 0.55rem 0.7rem 0.65rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+  animation: iphone-banner-in 0.45s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+.iphone-auth__banner-top {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  font-weight: 700;
+}
+
+.iphone-auth__banner-top img {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 0.2rem;
+  background: #111;
+  object-fit: contain;
+  padding: 0.08rem;
+  box-sizing: border-box;
+}
+
+.iphone-auth__banner-top time {
+  margin-left: auto;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+.iphone-auth__banner-title {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.iphone-auth__banner-body {
+  margin: 0.15rem 0 0;
+  font-size: 0.68rem;
+  color: #4b5563;
+}
+
+.iphone-auth__sheet {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+  margin-inline: 0.55rem;
+  margin-bottom: 1.7rem;
+  padding: 0.85rem 0.8rem 0.9rem;
+  border-radius: 1.15rem;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+  transform: translateY(110%);
+  opacity: 0;
+  transition:
+    transform 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.4s ease;
+}
+
+.iphone-auth__sheet.is-show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.iphone-auth__agent {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.65rem;
+}
+
+.iphone-auth__agent strong {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.iphone-auth__agent span {
+  font-size: 0.65rem;
+  color: #6b7280;
+}
+
+.iphone-auth__cmd {
+  display: block;
+  padding: 0.5rem 0.55rem;
+  border-radius: 0.55rem;
+  background: #eef1f5;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.58rem;
+  color: #1f2937;
+  word-break: break-all;
+}
+
+.iphone-auth__tags {
+  display: flex;
+  gap: 0.35rem;
+  margin: 0.45rem 0 0.7rem;
+}
+
+.iphone-auth__rule,
+.iphone-auth__risk {
+  padding: 0.1rem 0.42rem;
+  border-radius: 999px;
+  font-size: 0.58rem;
+  font-weight: 600;
+}
+
+.iphone-auth__rule {
+  background: #e5e7eb;
+  color: #4b5563;
+}
+
+.iphone-auth__risk {
+  background: #fff4d6;
+  color: #a16207;
+}
+
+.iphone-auth__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.iphone-auth__deny,
+.iphone-auth__allow {
+  min-height: 2.2rem;
+  border-radius: 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.iphone-auth__deny:disabled,
+.iphone-auth__allow:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.iphone-auth__deny {
+  background: #eef0f3;
+  color: #111;
+}
+
+.iphone-auth__allow {
+  background: #34c759;
+  color: #06210f;
+}
+
+.iphone-auth__done {
+  text-align: center;
+  padding: 0.35rem 0.2rem 0.15rem;
+}
+
+.iphone-auth__done p {
+  margin: 0.45rem 0 0;
+  font-size: 0.72rem;
+  color: #4b5563;
+  line-height: 1.45;
+}
+
+.iphone-auth__safe,
+.iphone-auth__blocked {
+  display: inline-flex;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.iphone-auth__safe {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.iphone-auth__blocked {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+@keyframes iphone-banner-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iphone-auth__banner,
+  .iphone-auth__sheet {
+    animation: none;
+    transition: none;
+  }
+
+  .iphone-auth__sheet.is-show {
+    opacity: 1;
+    transform: none;
+  }
+}

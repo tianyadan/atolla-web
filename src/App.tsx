@@ -3,11 +3,12 @@ import BlurText from './components/reactbits/BlurText/BlurText'
 import FadeContent from './components/reactbits/FadeContent/FadeContent'
 import ScrollFloat from './components/reactbits/ScrollFloat/ScrollFloat'
 import ScrollReveal from './components/reactbits/ScrollReveal/ScrollReveal'
+import AuthSyncSection from './components/devices/AuthSyncSection'
+import MultiDeviceSection from './components/devices/MultiDeviceSection'
 import AvatarShowcase from './components/AvatarShowcase'
 import EnginesSection from './components/EnginesSection'
 import GovernanceVisual from './components/GovernanceVisual'
 import HeroJelly from './components/HeroJelly'
-import MobileCollabSection from './components/MobileCollabSection'
 import ParallaxSection from './components/ParallaxSection'
 import SiteFooter from './components/SiteFooter'
 import SiteNav from './components/SiteNav'
@@ -94,6 +95,40 @@ export default function App() {
         </FadeContent>
       </ParallaxSection>
 
+      {/* Multi-device Continuity */}
+      <section className="section section--devices" id="devices" aria-labelledby="devices-title">
+        <div className="section__inner section__inner--devices">
+          <FadeContent blur duration={0.9} threshold={0.12} className="section__copy-block">
+            <p className="section__eyebrow">Mac 与 iPhone</p>
+            <h2 id="devices-title" className="section__title section__title--balanced">
+              同一支团队，
+              <span className="text-keep">跨设备延续</span>
+            </h2>
+            <p className="section__lede section__lede--wide">
+              桌面端深入推进任务，手机端随时查看与回复。Mac 与 iPhone 共享同一套智能体、会话与状态。
+            </p>
+          </FadeContent>
+          <MultiDeviceSection />
+        </div>
+      </section>
+
+      {/* Command authorization Continuity */}
+      <section className="section section--auth" id="authorize" aria-labelledby="auth-title">
+        <div className="section__inner section__inner--devices">
+          <FadeContent blur duration={0.9} threshold={0.12} className="section__copy-block">
+            <p className="section__eyebrow">命令授权</p>
+            <h2 id="auth-title" className="section__title section__title--balanced">
+              需要执行时，
+              <span className="text-keep">两端一起问你</span>
+            </h2>
+            <p className="section__lede section__lede--wide">
+              智能体遇到需确认的命令时，会话里弹出授权卡，Mac 与 iPhone 同步收到系统通知。一端允许，两端同时放行。
+            </p>
+          </FadeContent>
+          <AuthSyncSection />
+        </div>
+      </section>
+
       {/* CLI engines */}
       <ParallaxSection id="engines" aria-labelledby="engines-title">
         <FadeContent blur duration={0.9} threshold={0.15} className="section__inner">
@@ -143,23 +178,6 @@ export default function App() {
           <AvatarShowcase />
         </FadeContent>
       </ParallaxSection>
-
-      {/* iPhone */}
-      <section className="section section--iphone" id="iphone" aria-labelledby="iphone-title">
-        <div className="section__inner section__inner--split">
-          <FadeContent blur duration={0.9} threshold={0.15} className="section__copy-pane">
-            <p className="section__eyebrow">iPhone 应用</p>
-            <h2 id="iphone-title" className="section__title section__title--balanced">
-              手机与网页，
-              <span className="text-keep">一起协作</span>
-            </h2>
-            <p className="section__lede">
-              Atolla 提供 iPhone 应用，与网页平台协同工作。在手机上查看团队、命令与智能体回复。
-            </p>
-          </FadeContent>
-          <MobileCollabSection />
-        </div>
-      </section>
 
       {/* Governance */}
       <ParallaxSection id="governance" aria-labelledby="gov-title">
