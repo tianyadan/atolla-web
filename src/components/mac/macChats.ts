@@ -1,13 +1,15 @@
+import { translate } from '../../i18n/dictionaries'
+import type { Locale } from '../../i18n/types'
 import type { JellyColor } from '../../jelly/colors'
 import type { JellyState } from '../../jelly/jellySprite'
 
-export type MacChatStatus = '进行中' | '已完成'
+export type MacChatStatusKey = 'active' | 'done'
 
 export type MacChatItem = {
   id: string
-  title: string
-  team: string
-  status: MacChatStatus
+  titleKey: string
+  teamKey: string
+  statusKey: MacChatStatusKey
   color: JellyColor
   group: 'today' | 'week'
 }
@@ -15,25 +17,25 @@ export type MacChatItem = {
 export const MAC_CHATS: MacChatItem[] = [
   {
     id: 'opt-settings',
-    title: '优化数字员工设置页面',
-    team: '全栈',
-    status: '进行中',
+    titleKey: 'mac.chat.opt',
+    teamKey: 'mac.team.fullstack',
+    statusKey: 'active',
     color: 'red',
     group: 'today',
   },
   {
     id: 'fix-bug',
-    title: '修复客户端 bug',
-    team: '开发',
-    status: '已完成',
+    titleKey: 'mac.chat.bug',
+    teamKey: 'mac.team.dev',
+    statusKey: 'done',
     color: 'purple',
     group: 'week',
   },
   {
     id: 'mobile-ux',
-    title: '完善移动端交互',
-    team: '产品',
-    status: '已完成',
+    titleKey: 'mac.chat.mobile',
+    teamKey: 'mac.team.product',
+    statusKey: 'done',
     color: 'blue',
     group: 'week',
   },
@@ -50,12 +52,16 @@ export function jellyForAuth(phase: AuthPhase): JellyState {
   return 'idle'
 }
 
-export function pickMacReply(input: string): string {
+export function pickMacReply(input: string, locale: Locale): string {
   const text = input.trim().toLowerCase()
-  if (/你好|hello|hi/.test(text)) return '你好！我在。把需求发我，我继续推进。'
-  if (/中断|interrupt|stop/.test(text)) return '已收到中断说明，我会先停在安全点，等你下一步指示。'
-  if (/设置|页面|数字员工/.test(text)) {
-    return '收到。我会缩短显示名称，并检查设置页在窄屏下的布局。'
+  if (/你好|hello|hi/.test(text)) return translate(locale, 'mac.reply.hello')
+  if (/中断|interrupt|stop/.test(text)) return translate(locale, 'mac.reply.interrupt')
+  if (/设置|页面|数字员工|settings|display/.test(text)) {
+    return translate(locale, 'mac.reply.settings')
   }
-  return '明白。我先按这个方向改，有结果会同步到会话里。'
+  return translate(locale, 'mac.reply.default')
+}
+
+export function statusLabel(statusKey: MacChatStatusKey, locale: Locale) {
+  return translate(locale, statusKey === 'active' ? 'mac.status.active' : 'mac.status.done')
 }

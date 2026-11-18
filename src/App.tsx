@@ -7,18 +7,21 @@ import AuthSyncSection from './components/devices/AuthSyncSection'
 import MultiDeviceSection from './components/devices/MultiDeviceSection'
 import AvatarShowcase from './components/AvatarShowcase'
 import EnginesSection from './components/EnginesSection'
-import GovernanceVisual from './components/GovernanceVisual'
+import GitHubMark, { GITHUB_REPO_URL } from './components/GitHubMark'
 import HeroJelly from './components/HeroJelly'
 import ParallaxSection from './components/ParallaxSection'
 import SiteFooter from './components/SiteFooter'
 import SiteNav from './components/SiteNav'
 import TeamDiagram from './components/TeamDiagram'
+import { useI18n } from './i18n/I18nProvider'
 import './App.css'
 
 /** Atolla 产品营销单页 */
 export default function App() {
+  const { t, fading } = useI18n()
+
   return (
-    <div className="page" id="top">
+    <div className={`page ${fading ? 'is-locale-fading' : ''}`} id="top">
       <div className="page__aurora" aria-hidden="true">
         <Aurora
           colorStops={['#0a3a4a', '#1a6b7a', '#0d4f5c']}
@@ -37,8 +40,7 @@ export default function App() {
 
       <SiteNav />
 
-      {/* Hero */}
-      <section className="section section--hero" aria-label="首屏">
+      <section className="section section--hero" aria-label="hero">
         <div className="hero">
           <div className="hero__copy">
             <h1 className="hero__brand">
@@ -62,21 +64,30 @@ export default function App() {
               trigger="mount"
               className="hero__tagline"
             >
-              <p className="hero__tagline-text">
-                创建 AI 智能体，
-                <wbr />
-                组成团队，协同完成任务。
-              </p>
+              <p className="hero__tagline-text">{t('hero.tagline')}</p>
             </FadeContent>
+            <div className="hero__actions">
+              <a className="btn btn--primary" href="#cta">
+                {t('hero.ctaTrial')}
+              </a>
+              <a
+                className="btn btn--ghost btn--github"
+                href={GITHUB_REPO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <GitHubMark size={16} />
+                {t('hero.ctaGithub')}
+              </a>
+            </div>
           </div>
           <HeroJelly size={148} />
         </div>
       </section>
 
-      {/* Multi-agent */}
       <ParallaxSection id="collaborate" aria-labelledby="collab-title">
         <FadeContent blur duration={0.9} threshold={0.2} className="section__inner">
-          <p className="section__eyebrow">多智能体协作</p>
+          <p className="section__eyebrow">{t('collab.eyebrow')}</p>
           <ScrollFloat
             containerClassName="section__title-wrap"
             textClassName="section__title"
@@ -86,53 +97,42 @@ export default function App() {
             scrollEnd="bottom bottom-=35%"
             stagger={0.02}
           >
-            一只水母，就是一支团队
+            {t('collab.title')}
           </ScrollFloat>
-          <p className="section__lede">
-            在 Atolla，你创建智能体，并把它们组织成团队。钟面用于指派任务；每一条触手，都是一名智能体，共同推进工作。
-          </p>
+          <p className="section__lede">{t('collab.lede')}</p>
           <TeamDiagram />
         </FadeContent>
       </ParallaxSection>
 
-      {/* Multi-device Continuity */}
       <section className="section section--devices" id="devices" aria-labelledby="devices-title">
         <div className="section__inner section__inner--devices">
           <FadeContent blur duration={0.9} threshold={0.12} className="section__copy-block">
-            <p className="section__eyebrow">Mac 与 iPhone</p>
+            <p className="section__eyebrow">{t('devices.eyebrow')}</p>
             <h2 id="devices-title" className="section__title section__title--balanced">
-              同一支团队，
-              <span className="text-keep">跨设备延续</span>
+              {t('devices.title')}
             </h2>
-            <p className="section__lede section__lede--wide">
-              桌面端深入推进任务，手机端随时查看与回复。Mac 与 iPhone 共享同一套智能体、会话与状态。
-            </p>
+            <p className="section__lede section__lede--wide">{t('devices.lede')}</p>
           </FadeContent>
           <MultiDeviceSection />
         </div>
       </section>
 
-      {/* Command authorization Continuity */}
       <section className="section section--auth" id="authorize" aria-labelledby="auth-title">
         <div className="section__inner section__inner--devices">
           <FadeContent blur duration={0.9} threshold={0.12} className="section__copy-block">
-            <p className="section__eyebrow">命令授权</p>
+            <p className="section__eyebrow">{t('auth.eyebrow')}</p>
             <h2 id="auth-title" className="section__title section__title--balanced">
-              需要执行时，
-              <span className="text-keep">两端一起问你</span>
+              {t('auth.title')}
             </h2>
-            <p className="section__lede section__lede--wide">
-              智能体遇到需确认的命令时，会话里弹出授权卡，Mac 与 iPhone 同步收到系统通知。一端允许，两端同时放行。
-            </p>
+            <p className="section__lede section__lede--wide">{t('auth.lede')}</p>
           </FadeContent>
           <AuthSyncSection />
         </div>
       </section>
 
-      {/* CLI engines */}
       <ParallaxSection id="engines" aria-labelledby="engines-title">
         <FadeContent blur duration={0.9} threshold={0.15} className="section__inner">
-          <p className="section__eyebrow">CLI 引擎</p>
+          <p className="section__eyebrow">{t('engines.eyebrow')}</p>
           <ScrollReveal
             containerClassName="section__title-wrap"
             textClassName="section__title"
@@ -145,19 +145,16 @@ export default function App() {
             effect="rise"
             duration={0.7}
           >
-            三种引擎，任你调度
+            {t('engines.title')}
           </ScrollReveal>
-          <p className="section__lede">
-            Atolla 支持 Codex、Claude、Cursor 三种 CLI 引擎。智能体可以运行在其中任意一种之上。
-          </p>
+          <p className="section__lede">{t('engines.lede')}</p>
           <EnginesSection />
         </FadeContent>
       </ParallaxSection>
 
-      {/* Avatars */}
       <ParallaxSection id="avatars" aria-labelledby="avatar-title">
         <FadeContent blur duration={0.9} threshold={0.15} className="section__inner">
-          <p className="section__eyebrow">像素水母头像</p>
+          <p className="section__eyebrow">{t('avatars.eyebrow')}</p>
           <ScrollReveal
             containerClassName="section__title-wrap"
             textClassName="section__title"
@@ -170,51 +167,29 @@ export default function App() {
             effect="rise"
             duration={0.7}
           >
-            十二色身份，随状态而动
+            {t('avatars.title')}
           </ScrollReveal>
-          <p className="section__lede">
-            每位智能体拥有像素风水母头像，共十二种颜色。点选色板可即时换色；状态可手动预览，也可自动循环。
-          </p>
+          <p className="section__lede">{t('avatars.lede')}</p>
           <AvatarShowcase />
         </FadeContent>
       </ParallaxSection>
 
-      {/* Governance */}
-      <ParallaxSection id="governance" aria-labelledby="gov-title">
-        <FadeContent blur duration={0.9} threshold={0.15} className="section__inner">
-          <p className="section__eyebrow">审批与治理</p>
-          <ScrollReveal
-            containerClassName="section__title-wrap"
-            textClassName="section__title"
-            baseOpacity={0.12}
-            enableBlur
-            blurStrength={5}
-            baseOffset={24}
-            stagger={0.04}
-            mode="enter"
-            effect="rise"
-            duration={0.7}
-          >
-            需要你拍板时，蓝光会亮起
-          </ScrollReveal>
-          <p className="section__lede">
-            需要人类批准的操作会被明确呈现。钟面边缘的蓝光表示有事项正在等待你的确认——你始终保有控制权。
-          </p>
-          <GovernanceVisual />
-        </FadeContent>
-      </ParallaxSection>
-
-      {/* CTA */}
-      <section className="section section--cta" id="cta" aria-label="开始使用">
+      <section className="section section--cta" id="cta" aria-label={t('cta.aria')}>
         <FadeContent blur duration={0.9} threshold={0.2} className="section__inner section__inner--cta">
-          <h2 className="cta__title">把智能体，带进你的团队</h2>
-          <p className="cta__lede">申请试用，或直接进入产品，开始组建你的第一支水母团队。</p>
+          <h2 className="cta__title">{t('cta.title')}</h2>
+          <p className="cta__lede">{t('cta.lede')}</p>
           <div className="cta__actions">
             <a className="btn btn--primary" href="#">
-              申请试用
+              {t('cta.trial')}
             </a>
-            <a className="btn btn--ghost" href="#">
-              进入产品
+            <a
+              className="btn btn--ghost btn--github"
+              href={GITHUB_REPO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GitHubMark size={16} />
+              {t('cta.github')}
             </a>
           </div>
         </FadeContent>

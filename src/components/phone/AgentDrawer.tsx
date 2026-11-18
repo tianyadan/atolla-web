@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { useI18n } from '../../i18n/I18nProvider'
 import JellyAvatar from '../../jelly/JellyAvatar'
-import { AGENT_GROUPS, AGENTS } from './agents'
+import { AGENT_GROUPS, AGENTS, agentName } from './agents'
 import './AgentDrawer.css'
 
 type AgentDrawerProps = {
@@ -14,6 +15,7 @@ type AgentDrawerProps = {
  * 智能体选择抽屉：约占屏宽 75%，左侧滑入，点遮罩关闭。
  */
 export default function AgentDrawer({ open, selectedId, onClose, onSelect }: AgentDrawerProps) {
+  const { t, locale } = useI18n()
   const [expanded, setExpanded] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(AGENT_GROUPS.map((g) => [g.id, true])),
   )
@@ -27,12 +29,12 @@ export default function AgentDrawer({ open, selectedId, onClose, onSelect }: Age
       <button
         type="button"
         className="agent-drawer__overlay"
-        aria-label="关闭侧栏"
+        aria-label={t('phone.closeSidebar')}
         tabIndex={open ? 0 : -1}
         onClick={onClose}
       />
 
-      <aside className="agent-drawer__panel" role="dialog" aria-label="选择智能体">
+      <aside className="agent-drawer__panel" role="dialog" aria-label={t('phone.selectAgent')}>
         <header className="agent-drawer__brand">
           <img src="/brand-jellyfish-white.png" alt="" width={22} height={22} className="agent-drawer__logo" />
           <span>Atolla</span>
@@ -50,7 +52,7 @@ export default function AgentDrawer({ open, selectedId, onClose, onSelect }: Age
               <strong>company-mac</strong>
               <span className="agent-drawer__server">
                 <i />
-                服务器连接
+                {t('phone.server')}
               </span>
             </span>
             <span className="agent-drawer__chev" aria-hidden="true">
@@ -72,7 +74,7 @@ export default function AgentDrawer({ open, selectedId, onClose, onSelect }: Age
               </svg>
             </span>
             <span className="agent-drawer__card-body">
-              <strong>数字人管理</strong>
+              <strong>{t('phone.manage')}</strong>
             </span>
             <span className="agent-drawer__chev" aria-hidden="true">
               ›
@@ -94,7 +96,7 @@ export default function AgentDrawer({ open, selectedId, onClose, onSelect }: Age
                   <span className={`agent-drawer__chev ${openGroup ? 'is-open' : ''}`} aria-hidden="true">
                     ▾
                   </span>
-                  <span className="agent-drawer__group-name">{group.name}</span>
+                  <span className="agent-drawer__group-name">{t(group.nameKey)}</span>
                   <span className="agent-drawer__count">{group.agentIds.length}</span>
                 </button>
 
@@ -112,10 +114,10 @@ export default function AgentDrawer({ open, selectedId, onClose, onSelect }: Age
                           >
                             <JellyAvatar color={agent.color} size={28} state="idle" />
                             <span className="agent-drawer__agent-meta">
-                              <span className="agent-drawer__agent-name">{agent.name}</span>
+                              <span className="agent-drawer__agent-name">{agentName(id, locale)}</span>
                               <span className="agent-drawer__agent-status">
                                 <i />
-                                空闲
+                                {t('phone.idle')}
                               </span>
                             </span>
                             {agent.badge ? (
@@ -147,7 +149,7 @@ export default function AgentDrawer({ open, selectedId, onClose, onSelect }: Age
               </svg>
             </span>
             <span className="agent-drawer__user-meta">
-              <strong>当前登录用户</strong>
+              <strong>{t('phone.user')}</strong>
               <span>1***@163.com</span>
             </span>
             <span className="agent-drawer__gear" aria-hidden="true">

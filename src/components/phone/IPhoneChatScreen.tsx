@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
+import { useI18n } from '../../i18n/I18nProvider'
 import JellyAvatar from '../../jelly/JellyAvatar'
 import { prefersReducedMotion } from '../../jelly/jellySprite'
 import AgentDrawer from './AgentDrawer'
 import {
   AGENTS,
   DEFAULT_AGENT_ID,
+  agentName,
   groupNameOf,
   pickReply,
   type EngineId,
@@ -18,9 +20,6 @@ const DEMO_COMMANDS = [
   '/workspace/project/collect_data/write_snapshot.py',
   '/workspace/project/collect_data/publish_report.md',
 ]
-
-const DEMO_REPLY =
-  'One decision changes the design a lot — answering this next lets me lock the plan.'
 
 type FeedItem =
   | { kind: 'command'; id: string; path: string; pop?: boolean }
@@ -40,6 +39,7 @@ type DemoPhase = 'commands' | 'drawer' | 'message' | 'hold' | 'stopped'
  * iPhone 聊天场景：可交互输入、侧栏选人、自动演示（含短暂打开抽屉）。
  */
 export default function IPhoneChatScreen() {
+  const { t, locale } = useI18n()
   const [agentId, setAgentId] = useState(DEFAULT_AGENT_ID)
   const [engine, setEngine] = useState<EngineId>(AGENTS[DEFAULT_AGENT_ID].engine)
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -54,6 +54,7 @@ export default function IPhoneChatScreen() {
   const demoGenRef = useRef(0)
 
   const agent = AGENTS[agentId]
+  const demoReply = t('reply.demo')
 
   const clearTimers = () => {
     timersRef.current.forEach((id) => window.clearTimeout(id))
@@ -111,8 +112,8 @@ export default function IPhoneChatScreen() {
         {
           kind: 'agent',
           id: 'demo-msg',
-          text: DEMO_REPLY,
-          typed: DEMO_REPLY,
+          text: demoReply,
+          typed: demoReply,
           agentId: DEFAULT_AGENT_ID,
           typing: false,
         },
@@ -122,6 +123,7 @@ export default function IPhoneChatScreen() {
 
     let cancelled = false
     const gen = ++demoGenRef.current
+    const replyText = demoReply
 
     const alive = () => !cancelled && demoGenRef.current === gen
 
@@ -158,7 +160,6 @@ export default function IPhoneChatScreen() {
 
       const afterCommands = 480 + DEMO_COMMANDS.length * 460 + 500
 
-      // 短暂打开抽屉并选中另一位智能体
       schedule(() => {
         if (!alive()) return
         setDemoPhase('drawer')
@@ -181,13 +182,13 @@ export default function IPhoneChatScreen() {
           {
             kind: 'agent',
             id: msgId,
-            text: DEMO_REPLY,
+            text: replyText,
             typed: '',
             agentId: 'fullstack-a',
             typing: true,
           },
         ])
-        DEMO_REPLY.split('').forEach((_, i) => {
+        replyText.split('').forEach((_, i) => {
           schedule(() => {
             if (!alive()) return
             setFeed((prev) =>
@@ -195,8 +196,8 @@ export default function IPhoneChatScreen() {
                 item.kind === 'agent' && item.id === msgId
                   ? {
                       ...item,
-                      typed: DEMO_REPLY.slice(0, i + 1),
-                      typing: i + 1 < DEMO_REPLY.length,
+                      typed: replyText.slice(0, i + 1),
+                      typing: i + 1 < replyText.length,
                     }
                   : item,
               ),
@@ -205,7 +206,7 @@ export default function IPhoneChatScreen() {
         })
       }, afterCommands + 1400)
 
-      const holdAt = afterCommands + 1400 + 260 + DEMO_REPLY.length * 26 + 1800
+      const holdAt = afterCommands + 1400 + 260 + replyText.length * 26 + 1800
       schedule(() => {
         if (!alive()) return
         setDemoPhase('hold')
@@ -213,7 +214,6 @@ export default function IPhoneChatScreen() {
 
       schedule(() => {
         if (!alive()) return
-        // 切回默认智能体再开下一轮
         setAgentId(DEFAULT_AGENT_ID)
         setEngine(AGENTS[DEFAULT_AGENT_ID].engine)
         run()
@@ -225,7 +225,7 @@ export default function IPhoneChatScreen() {
       cancelled = true
       clearTimers()
     }
-  }, [demoActive, reduced])
+  }, [demoActive, reduced, demoReply])
 
   /**
    * 回复节奏：先出回复卡（水母 typing 帧）→ 短暂原地打字态 → 再逐字打出正文。
@@ -305,7 +305,7 @@ export default function IPhoneChatScreen() {
     setDraft('')
     // 用户气泡立刻出现在右侧
     setFeed((prev) => [...prev, { kind: 'user', id: `user-${Date.now()}`, text }])
-    const reply = pickReply(text)
+    const reply = pickReply(text, locale)
     // 稍后再切水母 typing → 打字回复
     schedule(() => {
       typeAgentReply(reply.text, agentId, reply.withCommand)
@@ -327,13 +327,12 @@ export default function IPhoneChatScreen() {
         <button
           type="button"
           className="iphone-chat__sidebar"
-          aria-label="打开侧栏"
+          aria-label={t('phone.openSidebar')}
           onClick={() => {
             stopDemo()
             setDrawerOpen(true)
           }}
         >
-          {/* 圆角方框 + 左侧竖条，侧栏图标 */}
           <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
             <rect
               x="2.5"
@@ -349,12 +348,12 @@ export default function IPhoneChatScreen() {
           </svg>
         </button>
         <div className="iphone-chat__title-block">
-          <div className="iphone-chat__name">{agent.name}</div>
+          <div className="iphone-chat__name">{agentName(agentId, locale)}</div>
           <div className="iphone-chat__meta">
             <span className="iphone-chat__engine" key={engine}>
               {engine}
             </span>
-            <span className="iphone-chat__group">{groupNameOf(agentId)}</span>
+            <span className="iphone-chat__group">{groupNameOf(agentId, locale)}</span>
           </div>
         </div>
       </header>
@@ -368,7 +367,7 @@ export default function IPhoneChatScreen() {
                 className={`iphone-chat__cmd ${item.pop ? 'is-pop' : ''}`}
               >
                 <div className="iphone-chat__cmd-label">
-                  <span>已执行命令</span>
+                  <span>{t('phone.cmdLabel')}</span>
                   <span className="iphone-chat__rule">static_rule</span>
                 </div>
                 <div className="iphone-chat__cmd-bar">
@@ -376,7 +375,7 @@ export default function IPhoneChatScreen() {
                     ▶
                   </span>
                   <code className="iphone-chat__path">{item.path}</code>
-                  <span className="iphone-chat__safe">无害</span>
+                  <span className="iphone-chat__safe">{t('phone.safe')}</span>
                 </div>
               </div>
             )
@@ -401,10 +400,10 @@ export default function IPhoneChatScreen() {
                     size={22}
                     state={item.typing ? 'typing' : 'idle'}
                   />
-                  <span className="iphone-chat__who-name">{who.name}</span>
+                  <span className="iphone-chat__who-name">{agentName(item.agentId, locale)}</span>
                 </div>
                 <button type="button" className="iphone-chat__copy">
-                  复制
+                  {t('phone.copy')}
                 </button>
               </div>
               <p className="iphone-chat__body">
@@ -415,7 +414,7 @@ export default function IPhoneChatScreen() {
           )
         })}
         {demoPhase === 'commands' && feed.length === 0 ? (
-          <p className="iphone-chat__hint">智能体准备就绪…</p>
+          <p className="iphone-chat__hint">{t('phone.hint')}</p>
         ) : null}
       </div>
 
@@ -426,7 +425,7 @@ export default function IPhoneChatScreen() {
           sendMessage()
         }}
       >
-        <button type="button" className="iphone-chat__round" aria-label="更多">
+        <button type="button" className="iphone-chat__round" aria-label={t('phone.more')}>
           +
         </button>
         <input
@@ -439,7 +438,7 @@ export default function IPhoneChatScreen() {
           onFocus={() => {
             if (demoActive) stopDemo()
           }}
-          placeholder="输入消息…"
+          placeholder={t('phone.placeholder')}
           enterKeyHint="send"
           autoComplete="off"
           autoCorrect="off"
@@ -447,7 +446,7 @@ export default function IPhoneChatScreen() {
         <button
           type="submit"
           className={`iphone-chat__send ${canSend ? 'is-active' : ''}`}
-          aria-label="发送"
+          aria-label={t('phone.send')}
           disabled={!canSend}
         >
           ↑

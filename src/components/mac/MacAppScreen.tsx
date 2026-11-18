@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useI18n } from '../../i18n/I18nProvider'
 import JellyAvatar from '../../jelly/JellyAvatar'
 import type { JellyState } from '../../jelly/jellySprite'
 import {
   AUTH_COMMAND,
   MAC_CHATS,
   pickMacReply,
+  statusLabel,
   type AuthPhase,
   type MacChatItem,
 } from './macChats'
@@ -38,11 +40,12 @@ export default function MacAppScreen({
   jellyState,
   className = '',
 }: MacAppScreenProps) {
+  const { t, locale } = useI18n()
   const [chatId, setChatId] = useState(MAC_CHATS[0].id)
   const [draft, setDraft] = useState('')
   const [busy, setBusy] = useState(true)
   const [elapsed, setElapsed] = useState(18)
-  const [feed, setFeed] = useState<FeedItem[]>(() => baseFeed())
+  const [feed, setFeed] = useState<FeedItem[]>([])
   const feedRef = useRef<HTMLDivElement>(null)
   const timers = useRef<number[]>([])
 
@@ -53,6 +56,10 @@ export default function MacAppScreen({
 
   const avatarState: JellyState =
     jellyState ?? (authPhase !== 'idle' ? (authPhase === 'pending' ? 'alert' : authPhase === 'approved' ? 'coding' : authPhase === 'denied' ? 'error' : 'idle') : busy ? 'typing' : 'idle')
+
+  useEffect(() => {
+    setFeed(baseFeed(t))
+  }, [locale, t])
 
   useEffect(() => {
     const id = window.setInterval(() => setElapsed((n) => n + 1), 1000)
@@ -104,9 +111,9 @@ export default function MacAppScreen({
 
   const selectChat = (item: MacChatItem) => {
     setChatId(item.id)
-    setFeed(baseFeedFor(item))
-    setBusy(item.status === '进行中')
-    setElapsed(item.status === '进行中' ? 18 : 0)
+    setFeed(baseFeedFor(item, t))
+    setBusy(item.statusKey === 'active')
+    setElapsed(item.statusKey === 'active' ? 18 : 0)
     setDraft('')
   }
 
@@ -119,7 +126,7 @@ export default function MacAppScreen({
       { kind: 'user', id: `u-${Date.now()}`, text },
     ])
     setBusy(true)
-    const reply = pickMacReply(text)
+    const reply = pickMacReply(text, locale)
     schedule(() => {
       setFeed((prev) => [
         ...prev,
@@ -156,10 +163,10 @@ export default function MacAppScreen({
             <i className="is-max" />
           </div>
           <div className="mac-app__side-actions">
-            <button type="button" className="mac-app__icon-btn" aria-label="新建">
+            <button type="button" className="mac-app__icon-btn" aria-label={t('mac.new')}>
               +
             </button>
-            <button type="button" className="mac-app__icon-btn" aria-label="侧栏">
+            <button type="button" className="mac-app__icon-btn" aria-label={t('mac.sidebar')}>
               <svg viewBox="0 0 18 18" width="14" height="14" aria-hidden="true">
                 <rect x="2.5" y="3" width="13" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
                 <path d="M7 3v12" fill="none" stroke="currentColor" strokeWidth="1.5" />
@@ -174,15 +181,15 @@ export default function MacAppScreen({
 
         <label className="mac-app__search">
           <span aria-hidden="true">⌕</span>
-          <input type="search" placeholder="Search agents or chats" />
+          <input type="search" placeholder={t('mac.search')} />
         </label>
 
         <div className="mac-app__groups">
           <button type="button" className="mac-app__groups-btn">
-            All groups
+            {t('mac.allGroups')}
             <span aria-hidden="true">▾</span>
           </button>
-          <button type="button" className="mac-app__icon-btn" aria-label="设置">
+          <button type="button" className="mac-app__icon-btn" aria-label={t('mac.settings')}>
             <svg viewBox="0 0 18 18" width="14" height="14" aria-hidden="true">
               <circle cx="9" cy="9" r="2.2" fill="none" stroke="currentColor" strokeWidth="1.4" />
               <path
@@ -197,7 +204,7 @@ export default function MacAppScreen({
         </div>
 
         <div className="mac-app__chats">
-          <p className="mac-app__chat-label">Today</p>
+          <p className="mac-app__chat-label">{t('mac.today')}</p>
           <ul>
             {today.map((item) => (
               <ChatRow
@@ -205,10 +212,12 @@ export default function MacAppScreen({
                 item={item}
                 selected={item.id === chatId}
                 onSelect={() => selectChat(item)}
+                t={t}
+                locale={locale}
               />
             ))}
           </ul>
-          <p className="mac-app__chat-label">Last 7 days</p>
+          <p className="mac-app__chat-label">{t('mac.week')}</p>
           <ul>
             {week.map((item) => (
               <ChatRow
@@ -216,6 +225,8 @@ export default function MacAppScreen({
                 item={item}
                 selected={item.id === chatId}
                 onSelect={() => selectChat(item)}
+                t={t}
+                locale={locale}
               />
             ))}
           </ul>
@@ -225,7 +236,7 @@ export default function MacAppScreen({
           <span className="mac-app__user-avatar" aria-hidden="true">
             U
           </span>
-          <span>用户</span>
+          <span>{t('mac.user')}</span>
           <span className="mac-app__user-more" aria-hidden="true">
             ⋯
           </span>
@@ -236,24 +247,24 @@ export default function MacAppScreen({
         <header className="mac-app__main-head">
           <div className="mac-app__identity">
             <JellyAvatar color={chat.color} size={28} state={avatarState} />
-            <strong>{chat.team}</strong>
+            <strong>{t(chat.teamKey)}</strong>
             <span className="mac-app__pill mac-app__pill--engine">Codex</span>
             <span className={`mac-app__pill mac-app__pill--busy ${busy ? 'is-on' : ''}`}>
-              {busy ? 'Busy' : 'Idle'}
+              {busy ? t('mac.busy') : t('mac.idleStatus')}
             </span>
           </div>
           <div className="mac-app__usage">
-            <span>Codex Usage</span>
+            <span>{t('mac.usage')}</span>
             <div className="mac-app__usage-bar" aria-hidden="true">
               <i style={{ width: '68%' }} />
             </div>
             <time className="mac-app__timer">{formatElapsed(elapsed)}</time>
           </div>
           <div className="mac-app__main-actions">
-            <button type="button" className="mac-app__icon-btn" aria-label="刷新">
+            <button type="button" className="mac-app__icon-btn" aria-label={t('mac.refresh')}>
               ↻
             </button>
-            <button type="button" className="mac-app__icon-btn" aria-label="更多">
+            <button type="button" className="mac-app__icon-btn" aria-label={t('phone.more')}>
               ⋯
             </button>
           </div>
@@ -266,24 +277,21 @@ export default function MacAppScreen({
                 <article key={item.id} className="mac-app__msg mac-app__msg--agent">
                   <div className="mac-app__msg-meta">
                     <JellyAvatar color={chat.color} size={22} state={avatarState} />
-                    <span>已运行 4天3小时</span>
+                    <span>{t('mac.running')}</span>
                   </div>
                   <p>
-                    在 React 项目里，
+                    {t('mac.intro').split('Optimization.tsx')[0]}
                     <a href="#devices">Optimization.tsx</a>
-                    {' '}
-                    的轮询策略偏激进。建议提交：
+                    {t('mac.intro').split('Optimization.tsx')[1] ?? ''}
                   </p>
-                  <code className="mac-app__commit">
-                    perf: reduce mobile polling and live activity energy usage
-                  </code>
+                  <code className="mac-app__commit">{t('mac.commit')}</code>
                 </article>
               )
             }
             if (item.kind === 'user') {
               return (
                 <div key={item.id} className="mac-app__msg mac-app__msg--user">
-                  <span className="mac-app__me">我</span>
+                  <span className="mac-app__me">{t('mac.me')}</span>
                   <div className="mac-app__bubble">
                     {item.withThumb ? <div className="mac-app__thumb" aria-hidden="true" /> : null}
                     <p>{item.text}</p>
@@ -296,9 +304,9 @@ export default function MacAppScreen({
                 <article key={item.id} className="mac-app__msg mac-app__msg--agent">
                   <div className="mac-app__msg-meta">
                     <JellyAvatar color={chat.color} size={22} state={avatarState} />
-                    <strong>{chat.team}</strong>
+                    <strong>{t(chat.teamKey)}</strong>
                     <button type="button" className="mac-app__copy">
-                      复制
+                      {t('mac.copy')}
                     </button>
                     <time>{item.elapsed}</time>
                   </div>
@@ -312,13 +320,13 @@ export default function MacAppScreen({
                   <JellyAvatar color={chat.color} size={22} state={avatarState === 'idle' ? 'typing' : avatarState} />
                   <div>
                     <p>
-                      compiling vibes
+                      {t('mac.working')}
                       {' '}
                       <time>{formatElapsed(elapsed)}</time>
                     </p>
                     <p className="mac-app__starting">
                       <i />
-                      Codex 正在开始…
+                      {t('mac.starting')}
                     </p>
                   </div>
                 </div>
@@ -326,18 +334,18 @@ export default function MacAppScreen({
             }
             if (item.kind === 'auth') {
               return (
-                <div key={item.id} className="mac-app__auth-card" role="dialog" aria-label="命令授权">
+                <div key={item.id} className="mac-app__auth-card" role="dialog" aria-label={t('auth.cardTitle')}>
                   <code className="mac-app__auth-cmd">{AUTH_COMMAND}</code>
                   <div className="mac-app__auth-tags">
                     <span className="mac-app__rule">static_rule</span>
-                    <span className="mac-app__risk mac-app__risk--confirm">需确认</span>
+                    <span className="mac-app__risk mac-app__risk--confirm">{t('auth.risk')}</span>
                   </div>
                   <div className="mac-app__auth-actions">
                     <button type="button" className="mac-app__deny" onClick={onDeny}>
-                      拒绝
+                      {t('auth.deny')}
                     </button>
                     <button type="button" className="mac-app__allow" onClick={onAllow}>
-                      允许
+                      {t('auth.allow')}
                     </button>
                   </div>
                 </div>
@@ -346,13 +354,13 @@ export default function MacAppScreen({
             return (
               <div key={item.id} className="mac-app__cmd-done">
                 <div className="mac-app__cmd-label">
-                  <span>已执行命令</span>
+                  <span>{t('mac.cmdDone')}</span>
                   <span className="mac-app__rule">static_rule</span>
                 </div>
                 <div className="mac-app__cmd-bar">
                   <span aria-hidden="true">▶</span>
                   <code>{AUTH_COMMAND}</code>
-                  <span className="mac-app__safe">无害 · 已执行</span>
+                  <span className="mac-app__safe">{t('auth.safeDone')}</span>
                 </div>
               </div>
             )
@@ -376,7 +384,7 @@ export default function MacAppScreen({
             rows={2}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            placeholder="Interrupt with a note, @ teammates…"
+            placeholder={t('mac.composerPh')}
             onKeyDown={(e) => {
               if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
                 e.preventDefault()
@@ -385,7 +393,7 @@ export default function MacAppScreen({
             }}
           />
           <div className="mac-app__composer-bar">
-            <button type="button" className="mac-app__plus" aria-label="附件">
+            <button type="button" className="mac-app__plus" aria-label={t('mac.attach')}>
               +
             </button>
             <div className="mac-app__ctx" aria-label="上下文占用 68%">
@@ -405,13 +413,13 @@ export default function MacAppScreen({
               </svg>
               <span>68%</span>
             </div>
-            <span className="mac-app__hint">Ctrl + Enter to send</span>
+            <span className="mac-app__hint">{t('mac.hintSend')}</span>
             <button type="button" className="mac-app__interrupt">
-              Interrupt
+              {t('mac.interrupt')}
             </button>
-            <button type="button" className="mac-app__stop" aria-label="Stop">
+            <button type="button" className="mac-app__stop" aria-label={t('mac.stop')}>
               <i />
-              Stop
+              {t('mac.stop')}
             </button>
           </div>
         </form>
@@ -424,10 +432,14 @@ function ChatRow({
   item,
   selected,
   onSelect,
+  t,
+  locale,
 }: {
   item: MacChatItem
   selected: boolean
   onSelect: () => void
+  t: (key: string) => string
+  locale: 'zh' | 'en'
 }) {
   return (
     <li>
@@ -438,12 +450,12 @@ function ChatRow({
       >
         <JellyAvatar color={item.color} size={26} state="idle" />
         <span className="mac-app__chat-body">
-          <span className="mac-app__chat-title">{item.title}</span>
+          <span className="mac-app__chat-title">{t(item.titleKey)}</span>
           <span className="mac-app__chat-status">
-            <i className={item.status === '进行中' ? 'is-busy' : 'is-done'} />
-            {item.team}
+            <i className={item.statusKey === 'active' ? 'is-busy' : 'is-done'} />
+            {t(item.teamKey)}
             {' · '}
-            {item.status}
+            {statusLabel(item.statusKey, locale)}
           </span>
         </span>
       </button>
@@ -451,35 +463,35 @@ function ChatRow({
   )
 }
 
-function baseFeed(): FeedItem[] {
-  return baseFeedFor(MAC_CHATS[0])
+function baseFeed(t: (key: string) => string): FeedItem[] {
+  return baseFeedFor(MAC_CHATS[0], t)
 }
 
-function baseFeedFor(chat: MacChatItem): FeedItem[] {
-  if (chat.status === '已完成') {
+function baseFeedFor(chat: MacChatItem, t: (key: string) => string): FeedItem[] {
+  if (chat.statusKey === 'done') {
     return [
       { kind: 'agent-intro', id: 'intro' },
       {
         kind: 'agent',
         id: 'done',
-        text: '这项任务已完成，相关改动已整理好。',
+        text: t('mac.doneMsg'),
         elapsed: '0m42s',
       },
     ]
   }
   return [
     { kind: 'agent-intro', id: 'intro' },
-    { kind: 'user', id: 'u1', text: 'hello' },
+    { kind: 'user', id: 'u1', text: t('mac.userHello') },
     {
       kind: 'agent',
       id: 'a1',
-      text: '你好！我在。',
+      text: t('mac.hello'),
       elapsed: '1m56s',
     },
     {
       kind: 'user',
       id: 'u2',
-      text: '数字员工设置界面里，名称显示太长了，帮我缩短一下。',
+      text: t('mac.userReq'),
       withThumb: true,
     },
     { kind: 'working', id: 'w1' },

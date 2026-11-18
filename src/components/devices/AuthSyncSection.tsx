@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useI18n } from '../../i18n/I18nProvider'
 import MacBookFrame from '../mac/MacBookFrame'
 import MacAppScreen from '../mac/MacAppScreen'
 import IPhoneFrame from '../phone/IPhoneFrame'
@@ -11,6 +12,7 @@ import './AuthSyncSection.css'
  * 命令授权 Continuity 演示：Mac 会话卡 + macOS 横幅 + iPhone 通知同步。
  */
 export default function AuthSyncSection() {
+  const { t } = useI18n()
   const [phase, setPhase] = useState<AuthPhase>('idle')
   const [loopKey, setLoopKey] = useState(0)
   const autoRef = useRef(true)
@@ -86,16 +88,16 @@ export default function AuthSyncSection() {
         <div className="mac-notify__body">
           <div className="mac-notify__top">
             <strong>Atolla</strong>
-            <time>现在</time>
+            <time>{t('auth.notify.now')}</time>
           </div>
-          <p className="mac-notify__title">全栈 请求执行命令</p>
-          <p className="mac-notify__text">有一条命令等待你授权后才会继续。</p>
+          <p className="mac-notify__title">{t('auth.notify.title')}</p>
+          <p className="mac-notify__text">{t('auth.notify.body')}</p>
           <div className="mac-notify__actions">
             <button type="button" onClick={deny}>
-              拒绝
+              {t('auth.deny')}
             </button>
             <button type="button" className="is-allow" onClick={allow}>
-              允许
+              {t('auth.allow')}
             </button>
           </div>
         </div>
@@ -108,7 +110,7 @@ export default function AuthSyncSection() {
       <ContinuityStage
         mac={
           <MacBookFrame
-            label="Atolla Mac 命令授权演示"
+            label={t('auth.macLabel')}
             overlay={macBanner}
             className="auth-sync__mac"
           >
@@ -122,11 +124,11 @@ export default function AuthSyncSection() {
         }
         phone={
           <IPhoneFrame
-            label="Atolla iPhone 命令授权通知"
+            label={t('auth.iphoneLabel')}
             className="auth-sync__phone"
             islandExpanded={pending}
-            islandTitle="全栈"
-            islandSubtitle="请求执行命令"
+            islandTitle={t('agent.team.fullstack')}
+            islandSubtitle={t('auth.islandSubtitle')}
           >
             <IPhoneAuthScreen phase={phase} onAllow={allow} onDeny={deny} />
           </IPhoneFrame>
@@ -135,16 +137,16 @@ export default function AuthSyncSection() {
 
       <div className="auth-sync__controls">
         <button type="button" className="auth-sync__replay" onClick={replay}>
-          重新演示
+          {t('auth.replay')}
         </button>
         <p>
           {phase === 'pending'
-            ? '两端同时等待授权 — 点「允许」或「拒绝」会立刻同步。'
+            ? t('auth.status.pending')
             : phase === 'approved'
-              ? '已允许：通知关闭，命令标记为「无害 · 已执行」。'
+              ? t('auth.status.approved')
               : phase === 'denied'
-                ? '已拒绝：通知关闭，水母进入错误态。'
-                : '智能体即将请求执行命令…'}
+                ? t('auth.status.denied')
+                : t('auth.status.idle')}
         </p>
       </div>
     </div>

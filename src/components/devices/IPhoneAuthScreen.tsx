@@ -1,3 +1,4 @@
+import { useI18n } from '../../i18n/I18nProvider'
 import JellyAvatar from '../../jelly/JellyAvatar'
 import { AUTH_COMMAND, type AuthPhase } from '../mac/macChats'
 import './IPhoneAuthScreen.css'
@@ -8,10 +9,9 @@ export type IPhoneAuthScreenProps = {
   onDeny: () => void
 }
 
-/**
- * iPhone 授权演示屏：锁屏式通知横幅 + 命令授权卡片。
- */
+/** iPhone 授权演示屏：锁屏式通知横幅 + 命令授权卡片。 */
 export default function IPhoneAuthScreen({ phase, onAllow, onDeny }: IPhoneAuthScreenProps) {
+  const { t } = useI18n()
   const pending = phase === 'pending'
   const jelly =
     phase === 'pending' ? 'alert' : phase === 'approved' ? 'coding' : phase === 'denied' ? 'error' : 'idle'
@@ -25,10 +25,10 @@ export default function IPhoneAuthScreen({ phase, onAllow, onDeny }: IPhoneAuthS
           <div className="iphone-auth__banner-top">
             <img src="/brand-jellyfish-white.png" alt="" width={14} height={14} />
             <span>ATOLLA</span>
-            <time>现在</time>
+            <time>{t('auth.notify.now')}</time>
           </div>
-          <p className="iphone-auth__banner-title">全栈 请求执行命令</p>
-          <p className="iphone-auth__banner-body">需要你确认后才会继续运行。</p>
+          <p className="iphone-auth__banner-title">{t('auth.bannerTitle')}</p>
+          <p className="iphone-auth__banner-body">{t('auth.bannerBody')}</p>
         </div>
       ) : null}
 
@@ -36,8 +36,8 @@ export default function IPhoneAuthScreen({ phase, onAllow, onDeny }: IPhoneAuthS
         <div className="iphone-auth__agent">
           <JellyAvatar color="red" size={36} state={jelly} />
           <div>
-            <strong>全栈</strong>
-            <span>命令授权</span>
+            <strong>{t('agent.team.fullstack')}</strong>
+            <span>{t('auth.cardTitle')}</span>
           </div>
         </div>
 
@@ -46,14 +46,14 @@ export default function IPhoneAuthScreen({ phase, onAllow, onDeny }: IPhoneAuthS
             <code className="iphone-auth__cmd">{AUTH_COMMAND}</code>
             <div className="iphone-auth__tags">
               <span className="iphone-auth__rule">static_rule</span>
-              <span className="iphone-auth__risk">需确认</span>
+              <span className="iphone-auth__risk">{t('auth.risk')}</span>
             </div>
             <div className="iphone-auth__actions">
               <button type="button" className="iphone-auth__deny" onClick={onDeny} disabled={!pending}>
-                拒绝
+                {t('auth.deny')}
               </button>
               <button type="button" className="iphone-auth__allow" onClick={onAllow} disabled={!pending}>
-                允许
+                {t('auth.allow')}
               </button>
             </div>
           </>
@@ -61,15 +61,15 @@ export default function IPhoneAuthScreen({ phase, onAllow, onDeny }: IPhoneAuthS
 
         {phase === 'approved' ? (
           <div className="iphone-auth__done">
-            <span className="iphone-auth__safe">无害 · 已执行</span>
-            <p>命令已在 Mac 与 iPhone 同步放行。</p>
+            <span className="iphone-auth__safe">{t('auth.safeDone')}</span>
+            <p>{t('auth.doneSync')}</p>
           </div>
         ) : null}
 
         {phase === 'denied' ? (
           <div className="iphone-auth__done is-denied">
-            <span className="iphone-auth__blocked">已拒绝</span>
-            <p>命令未执行，智能体已停下等待新指示。</p>
+            <span className="iphone-auth__blocked">{t('auth.blocked')}</span>
+            <p>{t('auth.deniedHint')}</p>
           </div>
         ) : null}
       </div>

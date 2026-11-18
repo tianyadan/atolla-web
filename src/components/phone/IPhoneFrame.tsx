@@ -22,7 +22,7 @@ function formatLocalTime(date = new Date()) {
 
 /**
  * 可复用 CSS 绘制的 iPhone 外壳（Dynamic Island + 状态栏）。
- * 屏幕内容由 children 注入，便于后续替换更多 mockup 场景。
+ * 状态栏时间与信号分列 Island 两侧「耳朵」，按屏宽等比缩放。
  */
 export default function IPhoneFrame({
   children,
@@ -74,12 +74,13 @@ export default function IPhoneFrame({
 
           <div className="iphone__status" aria-hidden="true">
             <span className="iphone__time">{displayTime}</span>
+            <span className="iphone__status-spacer" />
             <div className="iphone__status-right">
               <span className="iphone__signal" />
               <span className="iphone__network">5G</span>
               <span className="iphone__battery">
                 <i />
-                61
+                <em>61</em>
               </span>
             </div>
           </div>

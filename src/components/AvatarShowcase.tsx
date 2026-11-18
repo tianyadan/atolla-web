@@ -1,36 +1,38 @@
 import { useEffect, useState } from 'react'
+import { useI18n } from '../i18n/I18nProvider'
 import JellyAvatar from '../jelly/JellyAvatar'
-import { JELLY_COLORS, JELLY_COLOR_LABELS, type JellyColor } from '../jelly/colors'
+import { JELLY_COLORS, type JellyColor } from '../jelly/colors'
 import { prefersReducedMotion, type JellyState } from '../jelly/jellySprite'
 import TiltSurface from './TiltSurface'
 
-const STATES: { id: JellyState; label: string }[] = [
-  { id: 'idle', label: '空闲' },
-  { id: 'typing', label: '回复中' },
-  { id: 'ponder', label: '思考' },
-  { id: 'coding', label: '写代码' },
-  { id: 'sleep', label: '休眠' },
-  { id: 'eat', label: '进食' },
-  { id: 'alert', label: '提醒' },
-  { id: 'error', label: '出错' },
-  { id: 'celebrate', label: '庆祝' },
+const STATE_IDS: JellyState[] = [
+  'idle',
+  'typing',
+  'ponder',
+  'coding',
+  'sleep',
+  'eat',
+  'alert',
+  'error',
+  'celebrate',
 ]
 
 /** 十二色头像：点选色板即时切换，状态可手动或自动循环 */
 export default function AvatarShowcase() {
+  const { t } = useI18n()
   const [state, setState] = useState<JellyState>('typing')
   const [color, setColor] = useState<JellyColor>('cyan')
   const [autoCycle, setAutoCycle] = useState(true)
 
   useEffect(() => {
     if (!autoCycle || prefersReducedMotion()) return undefined
-    const t = setInterval(() => {
+    const timer = setInterval(() => {
       setState((current) => {
-        const idx = STATES.findIndex((s) => s.id === current)
-        return STATES[(idx + 1) % STATES.length].id
+        const idx = STATE_IDS.findIndex((s) => s === current)
+        return STATE_IDS[(idx + 1) % STATE_IDS.length]
       })
     }, 2200)
-    return () => clearInterval(t)
+    return () => clearInterval(timer)
   }, [autoCycle])
 
   return (
@@ -39,25 +41,25 @@ export default function AvatarShowcase() {
         <TiltSurface className="avatar-showcase__hero-card" maxTilt={8}>
           <JellyAvatar color={color} size={120} state={state} />
           <p className="avatar-showcase__hero-meta">
-            {JELLY_COLOR_LABELS[color]} · {STATES.find((s) => s.id === state)?.label}
+            {t(`avatars.color.${color}`)} · {t(`avatars.state.${state}`)}
           </p>
         </TiltSurface>
       </div>
 
-      <div className="avatar-showcase__states" role="tablist" aria-label="头像状态">
-        {STATES.map((item) => (
+      <div className="avatar-showcase__states" role="tablist" aria-label={t('avatars.states')}>
+        {STATE_IDS.map((id) => (
           <button
-            key={item.id}
+            key={id}
             type="button"
             role="tab"
-            aria-selected={state === item.id}
-            className={state === item.id ? 'is-active' : undefined}
+            aria-selected={state === id}
+            className={state === id ? 'is-active' : undefined}
             onClick={() => {
               setAutoCycle(false)
-              setState(item.id)
+              setState(id)
             }}
           >
-            {item.label}
+            {t(`avatars.state.${id}`)}
           </button>
         ))}
         <button
@@ -65,11 +67,11 @@ export default function AvatarShowcase() {
           className={autoCycle ? 'is-active avatar-showcase__cycle' : 'avatar-showcase__cycle'}
           onClick={() => setAutoCycle(true)}
         >
-          自动循环
+          {t('avatars.cycle')}
         </button>
       </div>
 
-      <ul className="avatar-showcase__grid" aria-label="选择颜色">
+      <ul className="avatar-showcase__grid" aria-label={t('avatars.colors')}>
         {JELLY_COLORS.map((c) => (
           <li key={c}>
             <button
@@ -79,7 +81,7 @@ export default function AvatarShowcase() {
               aria-pressed={color === c}
             >
               <JellyAvatar color={c} size={56} state={state} />
-              <span>{JELLY_COLOR_LABELS[c]}</span>
+              <span>{t(`avatars.color.${c}`)}</span>
             </button>
           </li>
         ))}

@@ -10,7 +10,7 @@
   --line: rgba(232, 238, 244, 0.08);
   --font-display: 'Outfit', 'Noto Sans SC', sans-serif;
   --font-body: 'Noto Sans SC', 'Outfit', sans-serif;
-  --nav-h: 4.25rem;
+  --nav-h: 48px;
   --section-pad: clamp(4.5rem, 12vh, 8.5rem);
   --content: min(72rem, calc(100% - 2.5rem));
 }
