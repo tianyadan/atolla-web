@@ -282,10 +282,10 @@
   z-index: 6;
 }
 
-/* Continuity 小手机：整体再收一点 */
+/* Continuity 小手机：整体再收一点，隐藏电量数字以给 5G 让路 */
 .continuity__phone .iphone {
   --iphone-pad-x: 12px;
-  --iphone-ear-gap: 5px;
+  --iphone-ear-gap: 8px;
   --iphone-time-size: 10px;
   --iphone-status-h: 8.5px;
 }
@@ -295,8 +295,13 @@
   height: 1.15rem;
 }
 
+.continuity__phone .iphone__battery em {
+  display: none;
+}
+
 .auth-sync .continuity__phone .iphone {
   --iphone-pad-x: 11px;
+  --iphone-ear-gap: 8px;
   --iphone-time-size: 9.5px;
   --iphone-status-h: 8px;
 }
