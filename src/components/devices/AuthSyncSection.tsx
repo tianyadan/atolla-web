@@ -9,11 +9,14 @@ import IPhoneAuthScreen from './IPhoneAuthScreen'
 import './AuthSyncSection.css'
 
 /**
- * 命令授权 Continuity 演示：Mac 会话卡 + macOS 横幅 + iPhone 通知同步。
+ * 命令授权 Continuity 演示。
+ * iPhone：Island 展开通知 → 停留 1.5s → 收起 → 再滑出授权 sheet（不同时叠加）。
  */
 export default function AuthSyncSection() {
   const { t } = useI18n()
   const [phase, setPhase] = useState<AuthPhase>('idle')
+  const [islandExpanded, setIslandExpanded] = useState(false)
+  const [sheetVisible, setSheetVisible] = useState(false)
   const [loopKey, setLoopKey] = useState(0)
   const autoRef = useRef(true)
   const timers = useRef<number[]>([])
@@ -29,15 +32,30 @@ export default function AuthSyncSection() {
     timers.current.push(id)
   }
 
+  /** pending：先 Island 1.5s，再 sheet */
+  const enterPendingUi = useCallback(() => {
+    setPhase('pending')
+    setSheetVisible(false)
+    setIslandExpanded(true)
+    schedule(() => {
+      setIslandExpanded(false)
+      schedule(() => setSheetVisible(true), 380)
+    }, 1500)
+  }, [])
+
   const allow = useCallback(() => {
     autoRef.current = false
     clearTimers()
+    setIslandExpanded(false)
+    setSheetVisible(true)
     setPhase('approved')
   }, [])
 
   const deny = useCallback(() => {
     autoRef.current = false
     clearTimers()
+    setIslandExpanded(false)
+    setSheetVisible(true)
     setPhase('denied')
   }, [])
 
@@ -45,6 +63,8 @@ export default function AuthSyncSection() {
     clearTimers()
     autoRef.current = true
     setPhase('idle')
+    setIslandExpanded(false)
+    setSheetVisible(false)
     setLoopKey((n) => n + 1)
   }
 
@@ -57,18 +77,26 @@ export default function AuthSyncSection() {
       if (cancelled || cycle.current !== gen || !autoRef.current) return
       clearTimers()
       setPhase('idle')
+      setIslandExpanded(false)
+      setSheetVisible(false)
+
       schedule(() => {
         if (cancelled || cycle.current !== gen || !autoRef.current) return
-        setPhase('pending')
+        enterPendingUi()
       }, 1400)
+
+      // island 1.5s + collapse + sheet hold, then auto-approve
       schedule(() => {
         if (cancelled || cycle.current !== gen || !autoRef.current) return
+        setIslandExpanded(false)
+        setSheetVisible(true)
         setPhase('approved')
-      }, 5200)
+      }, 1400 + 1500 + 380 + 2800)
+
       schedule(() => {
         if (cancelled || cycle.current !== gen || !autoRef.current) return
         run()
-      }, 8200)
+      }, 1400 + 1500 + 380 + 2800 + 2800)
     }
 
     run()
@@ -76,13 +104,13 @@ export default function AuthSyncSection() {
       cancelled = true
       clearTimers()
     }
-  }, [loopKey])
+  }, [loopKey, enterPendingUi])
 
   const jelly = jellyForAuth(phase)
-  const pending = phase === 'pending'
+  const macNotifyShow = phase === 'pending'
 
   const macBanner = (
-    <div className={`mac-notify ${pending ? 'is-show' : ''}`} role="status" aria-live="polite">
+    <div className={`mac-notify ${macNotifyShow ? 'is-show' : ''}`} role="status" aria-live="polite">
       <div className="mac-notify__card">
         <img src="/brand-jellyfish-white.png" alt="" width={28} height={28} className="mac-notify__logo" />
         <div className="mac-notify__body">
@@ -126,11 +154,16 @@ export default function AuthSyncSection() {
           <IPhoneFrame
             label={t('auth.iphoneLabel')}
             className="auth-sync__phone"
-            islandExpanded={pending}
+            islandExpanded={islandExpanded}
             islandTitle={t('agent.team.fullstack')}
             islandSubtitle={t('auth.islandSubtitle')}
           >
-            <IPhoneAuthScreen phase={phase} onAllow={allow} onDeny={deny} />
+            <IPhoneAuthScreen
+              phase={phase}
+              sheetVisible={sheetVisible}
+              onAllow={allow}
+              onDeny={deny}
+            />
           </IPhoneFrame>
         }
       />

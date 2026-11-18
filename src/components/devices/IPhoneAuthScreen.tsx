@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useI18n } from '../../i18n/I18nProvider'
 import JellyAvatar from '../../jelly/JellyAvatar'
 import { AUTH_COMMAND, type AuthPhase } from '../mac/macChats'
@@ -5,34 +6,39 @@ import './IPhoneAuthScreen.css'
 
 export type IPhoneAuthScreenProps = {
   phase: AuthPhase
+  /** 是否展示底部授权 sheet（island 收起之后） */
+  sheetVisible: boolean
   onAllow: () => void
   onDeny: () => void
 }
 
-/** iPhone 授权演示屏：锁屏式通知横幅 + 命令授权卡片。 */
-export default function IPhoneAuthScreen({ phase, onAllow, onDeny }: IPhoneAuthScreenProps) {
+/**
+ * iPhone 授权演示屏：
+ * Island 通知与底部 sheet 不同时出现；命令路径单行 ellipsis，点按展开。
+ */
+export default function IPhoneAuthScreen({
+  phase,
+  sheetVisible,
+  onAllow,
+  onDeny,
+}: IPhoneAuthScreenProps) {
   const { t } = useI18n()
+  const [pathExpanded, setPathExpanded] = useState(false)
   const pending = phase === 'pending'
   const jelly =
     phase === 'pending' ? 'alert' : phase === 'approved' ? 'coding' : phase === 'denied' ? 'error' : 'idle'
+
+  useEffect(() => {
+    if (!sheetVisible) setPathExpanded(false)
+  }, [sheetVisible])
+
+  const showSheet = sheetVisible && phase !== 'idle'
 
   return (
     <div className={`iphone-auth ${pending ? 'is-pending' : ''}`}>
       <div className="iphone-auth__wallpaper" aria-hidden="true" />
 
-      {pending ? (
-        <div className="iphone-auth__banner" role="status">
-          <div className="iphone-auth__banner-top">
-            <img src="/brand-jellyfish-white.png" alt="" width={14} height={14} />
-            <span>ATOLLA</span>
-            <time>{t('auth.notify.now')}</time>
-          </div>
-          <p className="iphone-auth__banner-title">{t('auth.bannerTitle')}</p>
-          <p className="iphone-auth__banner-body">{t('auth.bannerBody')}</p>
-        </div>
-      ) : null}
-
-      <div className={`iphone-auth__sheet ${phase !== 'idle' ? 'is-show' : ''}`}>
+      <div className={`iphone-auth__sheet ${showSheet ? 'is-show' : ''}`}>
         <div className="iphone-auth__agent">
           <JellyAvatar color="red" size={36} state={jelly} />
           <div>
@@ -43,7 +49,14 @@ export default function IPhoneAuthScreen({ phase, onAllow, onDeny }: IPhoneAuthS
 
         {phase === 'pending' || phase === 'idle' ? (
           <>
-            <code className="iphone-auth__cmd">{AUTH_COMMAND}</code>
+            <button
+              type="button"
+              className={`iphone-auth__cmd ${pathExpanded ? 'is-expanded' : ''}`}
+              onClick={() => setPathExpanded((v) => !v)}
+              title={AUTH_COMMAND}
+            >
+              <code>{AUTH_COMMAND}</code>
+            </button>
             <div className="iphone-auth__tags">
               <span className="iphone-auth__rule">static_rule</span>
               <span className="iphone-auth__risk">{t('auth.risk')}</span>

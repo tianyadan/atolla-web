@@ -1,3 +1,4 @@
+/* 外壳：锁定真实比例，禁止被 flex 单轴压扁；内容在固定画布上再 scale */
 .iphone {
   --iphone-pad-x: 24px;
   --iphone-island-w: 35%;
@@ -6,82 +7,57 @@
   --iphone-status-h: 12px;
   margin: 0;
   width: min(100%, 22rem);
+  min-width: 0;
+  flex-shrink: 0;
+  aspect-ratio: 390 / 844;
+  position: relative;
+  overflow: hidden;
   filter: drop-shadow(0 28px 50px rgba(0, 0, 0, 0.45));
 }
 
+.iphone__canvas {
+  position: absolute;
+  inset: 0 auto auto 0;
+  transform-origin: top left;
+  will-change: transform;
+}
+
 .iphone__shell {
-  border-radius: 2.6rem;
-  padding: 0.55rem;
+  width: 390px;
+  height: 844px;
+  box-sizing: border-box;
+  border-radius: 54px;
+  padding: 12px;
   background: linear-gradient(160deg, #3a3d44 0%, #1a1c20 45%, #0c0d10 100%);
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .iphone__bezel {
   position: relative;
-  border-radius: 2.15rem;
+  width: 100%;
+  height: 100%;
+  border-radius: 42px;
   overflow: hidden;
   background: #f4f5f7;
-  aspect-ratio: 9 / 19.2;
   display: flex;
   flex-direction: column;
   color: #111;
-  container-type: inline-size;
-  container-name: iphone-screen;
-}
-
-/* 小屏按容器宽度等比缩放（变量作用在状态栏后代） */
-@container iphone-screen (max-width: 280px) {
-  .iphone__status {
-    --iphone-pad-x: 14px;
-    --iphone-ear-gap: 6px;
-    --iphone-time-size: 11px;
-    --iphone-status-h: 9px;
-  }
-
-  .iphone__island {
-    height: 1.25rem;
-    top: 0.58rem;
-  }
-}
-
-@container iphone-screen (max-width: 220px) {
-  .iphone__status {
-    --iphone-pad-x: 11px;
-    --iphone-ear-gap: 5px;
-    --iphone-time-size: 9.5px;
-    --iphone-status-h: 8px;
-  }
-
-  .iphone__island {
-    height: 1.1rem;
-    top: 0.5rem;
-  }
-}
-
-@container iphone-screen (max-width: 180px) {
-  .iphone__status {
-    --iphone-pad-x: 9px;
-    --iphone-ear-gap: 4px;
-    --iphone-time-size: 8.5px;
-    --iphone-status-h: 7px;
-  }
 }
 
 .iphone__island {
   position: absolute;
-  top: 0.72rem;
+  top: 14px;
   left: 50%;
   z-index: 8;
-  /* 严格 35% 屏宽，避免 min-width 在小手机上挤占耳朵 */
   width: var(--iphone-island-w);
   min-width: 0;
-  height: 1.55rem;
+  height: 32px;
   transform: translateX(-50%);
   border-radius: 999px;
   background: #0a0a0a;
   display: grid;
   place-items: center end;
-  padding-right: 0.35em;
+  padding-right: 10px;
   transition:
     width 0.45s cubic-bezier(0.32, 0.72, 0, 1),
     height 0.45s cubic-bezier(0.32, 0.72, 0, 1),
@@ -92,16 +68,15 @@
 }
 
 .iphone__island.is-expanded {
-  width: calc(100% - 1.6rem);
-  height: 3.15rem;
-  border-radius: 1.35rem;
+  width: calc(100% - 28px);
+  height: 56px;
+  border-radius: 22px;
   place-items: center start;
-  padding: 0.45rem 0.65rem;
+  padding: 10px 14px;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
-  pointer-events: none;
 }
 
-/* Island 展开为通知时收起两侧状态，避免与 5G/时间碰撞 */
+/* Island 展开时收起两侧状态 */
 .iphone__bezel:has(.iphone__island.is-expanded) .iphone__time,
 .iphone__bezel:has(.iphone__island.is-expanded) .iphone__status-right {
   opacity: 0;
@@ -109,8 +84,8 @@
 }
 
 .iphone__island-cam {
-  width: 0.55rem;
-  height: 0.55rem;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #3a5a7a, #111 70%);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
@@ -119,59 +94,58 @@
 .iphone__island-note {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 0.45rem;
+  gap: 10px;
   align-items: center;
   width: 100%;
   color: #fff;
 }
 
 .iphone__island-logo {
-  width: 1.15rem;
-  height: 1.15rem;
-  border-radius: 0.28rem;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
   background: #111;
   object-fit: contain;
-  padding: 0.1rem;
+  padding: 2px;
   box-sizing: border-box;
 }
 
 .iphone__island-copy {
   display: grid;
-  gap: 0.05rem;
+  gap: 2px;
   min-width: 0;
 }
 
 .iphone__island-copy strong {
-  font-size: 0.68rem;
+  font-size: 13px;
   font-weight: 700;
   font-family: 'Noto Sans SC', system-ui, sans-serif;
   line-height: 1.15;
 }
 
 .iphone__island-copy span {
-  font-size: 0.58rem;
+  font-size: 11px;
   color: rgba(255, 255, 255, 0.72);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* 状态栏：绝对定位在 Island 两侧耳朵内，相对整屏中线留 ≥8px */
 .iphone__status {
   position: relative;
   z-index: 9;
-  height: calc(0.78rem + var(--iphone-status-h) + 0.28rem);
-  padding: 0.78rem var(--iphone-pad-x) 0.28rem;
+  height: 44px;
+  padding: 14px var(--iphone-pad-x) 6px;
   color: #111;
   font-family: var(--font-display);
   pointer-events: none;
+  flex: 0 0 auto;
 }
 
 .iphone__time {
   position: absolute;
   left: var(--iphone-pad-x);
-  top: 0.78rem;
-  /* 50% - 半 Island(17.5%) - gap - 左侧 padding */
+  top: 14px;
   max-width: calc(32.5% - var(--iphone-ear-gap) - var(--iphone-pad-x));
   font-size: var(--iphone-time-size);
   font-weight: 600;
@@ -183,19 +157,15 @@
   overflow: hidden;
 }
 
-.iphone__status-spacer {
-  display: none;
-}
-
 .iphone__status-right {
   position: absolute;
   right: var(--iphone-pad-x);
-  top: 0.78rem;
+  top: 14px;
   max-width: calc(32.5% - var(--iphone-ear-gap) - var(--iphone-pad-x));
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.28em;
+  gap: 4px;
   height: var(--iphone-status-h);
   overflow: hidden;
   font-size: var(--iphone-status-h);
@@ -203,8 +173,8 @@
 }
 
 .iphone__signal {
-  width: 1.15em;
-  height: 0.85em;
+  width: 14px;
+  height: 10px;
   flex: 0 0 auto;
   background:
     linear-gradient(#111, #111) 0 100% / 18% 40% no-repeat,
@@ -215,7 +185,7 @@
 
 .iphone__network {
   flex: 0 0 auto;
-  font-size: 0.92em;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.01em;
   line-height: 1;
@@ -224,17 +194,17 @@
 .iphone__battery {
   display: inline-flex;
   align-items: center;
-  gap: 0.22em;
+  gap: 3px;
   flex: 0 0 auto;
   font-variant-numeric: tabular-nums;
 }
 
 .iphone__battery i {
   display: inline-block;
-  width: 1.55em;
-  height: 0.78em;
+  width: 22px;
+  height: 10px;
   border: 1.5px solid #111;
-  border-radius: 0.18em;
+  border-radius: 2px;
   position: relative;
   box-sizing: border-box;
   background: linear-gradient(90deg, #34c759 0 68%, transparent 68%);
@@ -243,10 +213,10 @@
 .iphone__battery i::after {
   content: '';
   position: absolute;
-  right: -0.28em;
+  right: -3px;
   top: 50%;
-  width: 0.16em;
-  height: 0.42em;
+  width: 2px;
+  height: 5px;
   background: #111;
   border-radius: 0 1px 1px 0;
   transform: translateY(-50%);
@@ -254,7 +224,7 @@
 
 .iphone__battery em {
   font-style: normal;
-  font-size: 0.92em;
+  font-size: 11px;
   font-weight: 600;
   line-height: 1;
 }
@@ -272,42 +242,12 @@
 .iphone__home {
   position: absolute;
   left: 50%;
-  bottom: 0.45rem;
-  width: 7.2rem;
-  height: 0.28rem;
+  bottom: 8px;
+  width: 120px;
+  height: 5px;
   border-radius: 999px;
   background: #111;
   transform: translateX(-50%);
   opacity: 0.85;
   z-index: 6;
-}
-
-/* Continuity 小手机：整体再收一点，隐藏电量数字以给 5G 让路 */
-.continuity__phone .iphone {
-  --iphone-pad-x: 12px;
-  --iphone-ear-gap: 8px;
-  --iphone-time-size: 10px;
-  --iphone-status-h: 8.5px;
-}
-
-.continuity__phone .iphone__island {
-  top: 0.55rem;
-  height: 1.15rem;
-}
-
-.continuity__phone .iphone__battery em {
-  display: none;
-}
-
-.auth-sync .continuity__phone .iphone {
-  --iphone-pad-x: 11px;
-  --iphone-ear-gap: 8px;
-  --iphone-time-size: 9.5px;
-  --iphone-status-h: 8px;
-}
-
-@media (max-width: 560px) {
-  .iphone {
-    width: min(100%, 19.5rem);
-  }
 }

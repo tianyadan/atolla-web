@@ -1,12 +1,12 @@
 # Atolla 官网
 
-Atolla 多智能体协作平台产品营销站（简体中文单页）。
+Atolla 多智能体协作平台产品营销站（简体中文 / English 单页）。
 
 包含：
 - 像素水母头像与 CLI 引擎介绍
 - 纯 CSS MacBook + 可交互 macOS 应用演示
-- 可交互 iPhone 聊天 / 侧栏
-- Mac ↔ iPhone 命令授权与系统通知 Continuity 演示
+- 可交互 iPhone 聊天 / 侧栏（共享 `IPhoneFrame`：固定 390×844 画布 + `ResizeObserver` 等比缩放）
+- Mac ↔ iPhone 命令授权 Continuity（Island 通知 → 授权 sheet，不同时叠加）
 
 ## 本地开发
 
