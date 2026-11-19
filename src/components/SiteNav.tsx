@@ -108,9 +108,13 @@ export default function SiteNav() {
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
-            <span />
-            <span />
-            <span />
+            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+              {open ? (
+                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              ) : (
+                <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              )}
+            </svg>
           </button>
         </div>
       </div>
@@ -130,6 +134,22 @@ export default function SiteNav() {
           GitHub
           {stars === null ? null : ` · ${formatStars(stars)}`}
         </a>
+        <div className="site-nav__drawer-lang" role="group" aria-label={t('nav.lang')}>
+          <button
+            type="button"
+            className={locale === 'zh' ? 'is-active' : undefined}
+            onClick={() => setLocale('zh')}
+          >
+            中文
+          </button>
+          <button
+            type="button"
+            className={locale === 'en' ? 'is-active' : undefined}
+            onClick={() => setLocale('en')}
+          >
+            English
+          </button>
+        </div>
         <a href="#cta" className="site-nav__drawer-cta" onClick={() => setOpen(false)}>
           {t('nav.cta')}
         </a>

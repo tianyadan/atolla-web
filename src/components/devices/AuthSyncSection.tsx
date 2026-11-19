@@ -21,6 +21,21 @@ export default function AuthSyncSection() {
   const autoRef = useRef(true)
   const timers = useRef<number[]>([])
   const cycle = useRef(0)
+  const rootRef = useRef<HTMLDivElement>(null)
+  const [inView, setInView] = useState(false)
+
+  useEffect(() => {
+    const el = rootRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setInView(true)
+      return undefined
+    }
+    const io = new IntersectionObserver(([entry]) => setInView(Boolean(entry?.isIntersecting)), {
+      threshold: 0.25,
+    })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
 
   const clearTimers = () => {
     timers.current.forEach((id) => window.clearTimeout(id))
@@ -69,7 +84,7 @@ export default function AuthSyncSection() {
   }
 
   useEffect(() => {
-    if (!autoRef.current) return undefined
+    if (!autoRef.current || !inView) return undefined
     let cancelled = false
     const gen = ++cycle.current
 
@@ -104,7 +119,7 @@ export default function AuthSyncSection() {
       cancelled = true
       clearTimers()
     }
-  }, [loopKey, enterPendingUi])
+  }, [loopKey, enterPendingUi, inView])
 
   const jelly = jellyForAuth(phase)
   const macNotifyShow = phase === 'pending'
@@ -134,7 +149,7 @@ export default function AuthSyncSection() {
   )
 
   return (
-    <div className="auth-sync">
+    <div className="auth-sync" ref={rootRef}>
       <ContinuityStage
         mac={
           <MacBookFrame

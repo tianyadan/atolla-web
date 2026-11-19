@@ -22,7 +22,20 @@ export default function IPhoneAuthScreen({
   onAllow,
   onDeny,
 }: IPhoneAuthScreenProps) {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
+  const [now, setNow] = useState(() => new Date())
+
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(new Date()), 15_000)
+    return () => window.clearInterval(id)
+  }, [])
+
+  const clock = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
+  const dateLabel = now.toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US', {
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+  })
   const [pathExpanded, setPathExpanded] = useState(false)
   const pending = phase === 'pending'
   const jelly =
@@ -37,6 +50,10 @@ export default function IPhoneAuthScreen({
   return (
     <div className={`iphone-auth ${pending ? 'is-pending' : ''}`}>
       <div className="iphone-auth__wallpaper" aria-hidden="true" />
+      <div className="iphone-auth__lock" aria-hidden="true">
+        <span className="iphone-auth__date">{dateLabel}</span>
+        <span className="iphone-auth__clock">{clock}</span>
+      </div>
 
       <div className={`iphone-auth__sheet ${showSheet ? 'is-show' : ''}`}>
         <div className="iphone-auth__agent">

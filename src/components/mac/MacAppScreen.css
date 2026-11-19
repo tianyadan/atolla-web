@@ -696,18 +696,6 @@
   }
 }
 
-@media (max-width: 720px) {
-  .mac-app {
-    grid-template-columns: 32% 1fr;
-    font-size: 0.65rem;
-  }
-
-  .mac-app__usage span:first-child,
-  .mac-app__hint {
-    display: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .mac-app__starting i,
   .mac-app__auth-card,

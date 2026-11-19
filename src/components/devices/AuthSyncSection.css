@@ -46,13 +46,6 @@
   z-index: 40;
 }
 
-@media (max-width: 1280px) {
-  .mac-notify {
-    right: max(1.1rem, 10%);
-    width: min(72%, 16rem);
-  }
-}
-
 .mac-notify.is-show {
   transform: translateX(0);
   opacity: 1;

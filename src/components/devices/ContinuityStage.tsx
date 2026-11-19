@@ -49,7 +49,7 @@ export default function ContinuityStage({ mac, phone, className = '' }: Continui
       let h: number
       let w: number
       if (stacked) {
-        w = Math.min(stageW * 0.78, 300)
+        w = Math.min(window.innerWidth * 0.7, 300)
         h = w * (IPHONE_CANVAS_H / IPHONE_CANVAS_W)
       } else {
         // 桌面：高度 ≈ Mac 屏幕 80%，整体等比；外露约 1/3 宽度
