@@ -121,27 +121,18 @@ export default function App() {
         </div>
       </section>
 
-      <ParallaxSection id="engines" aria-labelledby="engines-title">
-        <FadeContent blur duration={0.9} threshold={0.15} className="section__inner">
-          <p className="section__eyebrow">{t('engines.eyebrow')}</p>
-          <ScrollReveal
-            containerClassName="section__title-wrap"
-            textClassName="section__title"
-            baseOpacity={0.12}
-            enableBlur
-            blurStrength={5}
-            baseOffset={24}
-            stagger={0.04}
-            mode="enter"
-            effect="rise"
-            duration={0.7}
-          >
-            {t('engines.title')}
-          </ScrollReveal>
-          <p className="section__lede">{t('engines.lede')}</p>
+      <section className="section section--engines" id="engines" aria-labelledby="engines-title">
+        <div className="section__inner">
+          <FadeContent blur duration={0.9} threshold={0.15}>
+            <p className="section__eyebrow">{t('engines.eyebrow')}</p>
+            <h2 id="engines-title" className="section__title section__title--balanced">
+              {t('engines.title')}
+            </h2>
+            <p className="section__lede section__lede--wide">{t('engines.lede')}</p>
+          </FadeContent>
           <EnginesSection />
-        </FadeContent>
-      </ParallaxSection>
+        </div>
+      </section>
 
       <ParallaxSection id="avatars" aria-labelledby="avatar-title">
         <FadeContent blur duration={0.9} threshold={0.15} className="section__inner">
