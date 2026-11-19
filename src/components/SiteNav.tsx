@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { RELEASE_URL } from './Download'
 import BrandLogo from './BrandLogo'
 import GitHubMark, { GITHUB_API_REPO, GITHUB_REPO_URL } from './GitHubMark'
 import { useI18n } from '../i18n/I18nProvider'
@@ -97,7 +98,7 @@ export default function SiteNav() {
             </span>
           </a>
 
-          <a className="site-nav__cta" href="#cta" onClick={() => setOpen(false)}>
+          <a className="site-nav__cta" href={RELEASE_URL} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
             {t('nav.cta')}
           </a>
 
@@ -150,7 +151,7 @@ export default function SiteNav() {
             English
           </button>
         </div>
-        <a href="#cta" className="site-nav__drawer-cta" onClick={() => setOpen(false)}>
+        <a href={RELEASE_URL} target="_blank" rel="noopener noreferrer" className="site-nav__drawer-cta" onClick={() => setOpen(false)}>
           {t('nav.cta')}
         </a>
       </div>

@@ -12,14 +12,13 @@ const zh: Dict = {
   'nav.authorize': '授权',
   'nav.engines': '引擎',
   'nav.avatars': '头像',
-  'nav.cta': '试用',
+  'nav.cta': '下载',
   'nav.menu': '打开菜单',
   'nav.close': '关闭菜单',
   'nav.lang': '语言',
   'nav.github': '在 GitHub 上查看 Atolla',
 
   'hero.tagline': '创建 AI 智能体，组成团队，协同完成任务。',
-  'hero.ctaTrial': '申请试用',
   'hero.ctaGithub': '在 GitHub 上查看',
 
   'collab.eyebrow': '多智能体协作',
@@ -99,10 +98,13 @@ const zh: Dict = {
   'avatars.color.coral': '珊瑚',
   'avatars.color.sky': '天蓝',
 
+  'download.mac': '下载 Mac 版',
+  'download.macMeta': 'v{v} · Apple 芯片',
+  'download.wip': '正在开发中',
+  'download.platforms': '支持平台',
   'cta.aria': '开始使用',
   'cta.title': '把智能体，带进你的团队',
-  'cta.lede': '申请试用，或到 GitHub 查看项目，开始组建你的第一支水母团队。',
-  'cta.trial': '申请试用',
+  'cta.lede': '下载 Mac 版，或到 GitHub 查看项目，开始组建你的第一支水母团队。',
   'cta.github': '在 GitHub 上查看',
 
   'footer.tagline': '多智能体协作平台',
@@ -208,14 +210,13 @@ const en: Dict = {
   'nav.authorize': 'Authorize',
   'nav.engines': 'Engines',
   'nav.avatars': 'Avatars',
-  'nav.cta': 'Try it',
+  'nav.cta': 'Download',
   'nav.menu': 'Open menu',
   'nav.close': 'Close menu',
   'nav.lang': 'Language',
   'nav.github': 'View Atolla on GitHub',
 
   'hero.tagline': 'Create AI agents, form teams, and collaborate on real work.',
-  'hero.ctaTrial': 'Request access',
   'hero.ctaGithub': 'View on GitHub',
 
   'collab.eyebrow': 'Multi-agent collaboration',
@@ -296,10 +297,13 @@ const en: Dict = {
   'avatars.color.coral': 'Coral',
   'avatars.color.sky': 'Sky',
 
+  'download.mac': 'Download for Mac',
+  'download.macMeta': 'v{v} · Apple silicon',
+  'download.wip': 'In development',
+  'download.platforms': 'Platforms',
   'cta.aria': 'Get started',
   'cta.title': 'Bring agents into your team',
-  'cta.lede': 'Request access, or open the project on GitHub and start assembling your first jellyfish team.',
-  'cta.trial': 'Request access',
+  'cta.lede': 'Download for Mac, or open the project on GitHub and start assembling your first jellyfish team.',
   'cta.github': 'View on GitHub',
 
   'footer.tagline': 'Multi-agent collaboration platform',

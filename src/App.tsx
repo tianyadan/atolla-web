@@ -8,6 +8,7 @@ import MultiDeviceSection from './components/devices/MultiDeviceSection'
 import AvatarShowcase from './components/AvatarShowcase'
 import EnginesSection from './components/EnginesSection'
 import GitHubMark, { GITHUB_REPO_URL } from './components/GitHubMark'
+import { MacDownloadButton, PlatformNote } from './components/Download'
 import HeroJelly from './components/HeroJelly'
 import ParallaxSection from './components/ParallaxSection'
 import SiteFooter from './components/SiteFooter'
@@ -67,9 +68,7 @@ export default function App() {
               <p className="hero__tagline-text">{t('hero.tagline')}</p>
             </FadeContent>
             <div className="hero__actions">
-              <a className="btn btn--primary" href="#cta">
-                {t('hero.ctaTrial')}
-              </a>
+              <MacDownloadButton />
               <a
                 className="btn btn--ghost btn--github"
                 href={GITHUB_REPO_URL}
@@ -80,6 +79,7 @@ export default function App() {
                 {t('hero.ctaGithub')}
               </a>
             </div>
+            <PlatformNote />
           </div>
           <HeroJelly size={148} />
         </div>
@@ -179,9 +179,7 @@ export default function App() {
           <h2 className="cta__title">{t('cta.title')}</h2>
           <p className="cta__lede">{t('cta.lede')}</p>
           <div className="cta__actions">
-            <a className="btn btn--primary" href="#">
-              {t('cta.trial')}
-            </a>
+            <MacDownloadButton />
             <a
               className="btn btn--ghost btn--github"
               href={GITHUB_REPO_URL}
@@ -192,6 +190,7 @@ export default function App() {
               {t('cta.github')}
             </a>
           </div>
+          <div className="platforms--center"><PlatformNote /></div>
         </FadeContent>
       </section>
 

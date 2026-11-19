@@ -1,0 +1,21 @@
+.btn--download { gap: 0.5rem; }
+.btn--download svg { margin-top: -2px; }
+.platforms {
+  list-style: none; margin: 1.1rem 0 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: inherit;
+}
+.platforms__item {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.35rem 0.75rem; border-radius: 999px;
+  font-size: 0.8rem; color: rgba(255,255,255,0.45);
+  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03);
+}
+.platforms__item span { color: rgba(255,255,255,0.6); font-weight: 500; }
+.platforms__item em { font-style: normal; }
+.platforms__item.is-ready { color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.22); }
+.platforms__item.is-ready span { color: #fff; }
+.platforms--center { justify-content: center; }
+@media (max-width: 900px) {
+  .hero .platforms { justify-content: center; }
+  .platforms__item { font-size: 0.75rem; padding: 0.3rem 0.65rem; }
+}
