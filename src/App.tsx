@@ -1,7 +1,6 @@
 import Aurora from './components/reactbits/Aurora/Aurora'
 import BlurText from './components/reactbits/BlurText/BlurText'
 import FadeContent from './components/reactbits/FadeContent/FadeContent'
-import ScrollFloat from './components/reactbits/ScrollFloat/ScrollFloat'
 import ScrollReveal from './components/reactbits/ScrollReveal/ScrollReveal'
 import AuthSyncSection from './components/devices/AuthSyncSection'
 import MultiDeviceSection from './components/devices/MultiDeviceSection'
@@ -13,7 +12,7 @@ import HeroJelly from './components/HeroJelly'
 import ParallaxSection from './components/ParallaxSection'
 import SiteFooter from './components/SiteFooter'
 import SiteNav from './components/SiteNav'
-import TeamDiagram from './components/TeamDiagram'
+import RelaySection from './components/RelaySection'
 import { useI18n } from './i18n/I18nProvider'
 import './App.css'
 
@@ -85,22 +84,14 @@ export default function App() {
         </div>
       </section>
 
-      <ParallaxSection id="collaborate" aria-labelledby="collab-title">
+      <ParallaxSection id="relay" aria-labelledby="relay-title">
         <FadeContent blur duration={0.9} threshold={0.2} className="section__inner">
-          <p className="section__eyebrow">{t('collab.eyebrow')}</p>
-          <ScrollFloat
-            containerClassName="section__title-wrap"
-            textClassName="section__title"
-            animationDuration={1}
-            ease="back.inOut(2)"
-            scrollStart="top bottom-=20%"
-            scrollEnd="bottom bottom-=35%"
-            stagger={0.02}
-          >
-            {t('collab.title')}
-          </ScrollFloat>
-          <p className="section__lede">{t('collab.lede')}</p>
-          <TeamDiagram />
+          <p className="section__eyebrow">{t('relay.eyebrow')}</p>
+          <h2 id="relay-title" className="section__title section__title--balanced">
+            {t('relay.title')}
+          </h2>
+          <p className="section__lede section__lede--wide">{t('relay.lede')}</p>
+          <RelaySection />
         </FadeContent>
       </ParallaxSection>
 

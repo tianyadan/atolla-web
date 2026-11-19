@@ -44,7 +44,7 @@ export default function SiteNav() {
   }, [open])
 
   const links = [
-    { href: '#collaborate', label: t('nav.collaborate') },
+    { href: '#relay', label: t('nav.relay') },
     { href: '#devices', label: t('nav.devices') },
     { href: '#authorize', label: t('nav.authorize') },
     { href: '#engines', label: t('nav.engines') },

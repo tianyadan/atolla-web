@@ -1,7 +1,7 @@
 import { useI18n } from '../i18n/I18nProvider'
 import './Download.css'
 
-export const RELEASE_URL = 'https://github.com/tianyadan/Atolla/releases/tag/v0.6.5'
+export const RELEASE_URL = 'https://github.com/tianyadan/Atolla/releases/latest'
 export const RELEASE_VERSION = '0.6.5'
 
 export function AppleMark({ size = 16 }: { size?: number }) {

@@ -22,7 +22,7 @@ export default function SiteFooter() {
             <h3>{t('footer.product')}</h3>
             <ul>
               <li>
-                <a href="#collaborate">{t('nav.collaborate')}</a>
+                <a href="#relay">{t('nav.relay')}</a>
               </li>
               <li>
                 <a href="#devices">{t('nav.devices')}</a>

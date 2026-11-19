@@ -259,6 +259,9 @@
   border-radius: 38px;
   padding: 18px 18px 16px;
   place-items: stretch;
+  grid-template-columns: minmax(0, 1fr);
+  overflow: hidden;
+  box-sizing: border-box;
   pointer-events: auto;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
 }

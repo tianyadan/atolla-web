@@ -1,5 +1,6 @@
 .page {
   position: relative;
+  padding-top: var(--nav-h);
   isolation: isolate;
   overflow-x: clip;
   background:
@@ -59,8 +60,13 @@
 
 /* —— Sticky frosted nav —— */
 .site-nav-bar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
   z-index: 50;
   height: var(--nav-h);
   backdrop-filter: saturate(1.2) blur(16px);
