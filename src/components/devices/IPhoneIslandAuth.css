@@ -1,0 +1,147 @@
+.island-auth {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  color: #fff;
+  font-family: 'Noto Sans SC', system-ui, sans-serif;
+  animation: island-content-in 0.35s ease 0.18s both;
+}
+
+.island-auth__head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.island-auth__logo {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  object-fit: contain;
+}
+
+.island-auth__app {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.island-auth__risk {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255, 179, 64, 0.18);
+  color: #ffc56b;
+  font-weight: 600;
+}
+
+.island-auth__agent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.island-auth__agent strong {
+  display: block;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.island-auth__agent span {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.island-auth__cmd {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.82);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.island-auth__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.island-auth__actions button {
+  height: 34px;
+  border: 0;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.island-auth__deny {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.island-auth__allow {
+  background: #34c759;
+  color: #06210f;
+}
+
+.island-auth__actions button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.island-result {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  color: #fff;
+  font-family: 'Noto Sans SC', system-ui, sans-serif;
+  font-size: 13px;
+  animation: island-content-in 0.3s ease 0.15s both;
+}
+
+.island-result__title {
+  font-weight: 700;
+}
+
+.island-result__badge {
+  margin-left: auto;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.island-result.is-ok .island-result__badge {
+  background: rgba(52, 199, 89, 0.2);
+  color: #5fe08a;
+}
+
+.island-result.is-denied .island-result__badge {
+  background: rgba(255, 69, 58, 0.2);
+  color: #ff7a70;
+}
+
+@keyframes island-content-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .island-auth,
+  .island-result {
+    animation: none;
+  }
+}

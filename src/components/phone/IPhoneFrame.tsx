@@ -15,6 +15,12 @@ export type IPhoneFrameProps = {
   islandExpanded?: boolean
   islandTitle?: string
   islandSubtitle?: string
+  /** 自定义展开内容（如可交互的授权 Live Activity），传入时替代默认横幅 */
+  islandContent?: ReactNode
+  /** 展开尺寸：banner 为通知胶囊，large 为可交互的大卡片 */
+  islandSize?: 'banner' | 'large'
+  /** dark：状态栏白字、与深色壁纸同底色（状态栏浮在内容上） */
+  tone?: 'light' | 'dark'
 }
 
 function formatLocalTime(date = new Date()) {
@@ -35,6 +41,9 @@ export default function IPhoneFrame({
   islandExpanded = false,
   islandTitle,
   islandSubtitle,
+  islandContent,
+  islandSize = 'banner',
+  tone = 'light',
 }: IPhoneFrameProps) {
   const [liveTime, setLiveTime] = useState(() => formatLocalTime())
   const [scale, setScale] = useState(1)
@@ -69,7 +78,7 @@ export default function IPhoneFrame({
   return (
     <figure
       ref={bodyRef}
-      className={`iphone ${className}`.trim()}
+      className={`iphone ${tone === 'dark' ? 'iphone--dark' : ''} ${className}`.replace(/\s+/g, ' ').trim()}
       aria-label={label}
       style={
         {
@@ -89,10 +98,14 @@ export default function IPhoneFrame({
         <div className="iphone__shell">
           <div className="iphone__bezel">
             <div
-              className={`iphone__island ${islandExpanded ? 'is-expanded' : ''}`}
+              className={`iphone__island ${islandExpanded ? 'is-expanded' : ''} ${
+                islandExpanded && islandSize === 'large' ? 'is-large' : ''
+              }`}
               aria-hidden={!islandExpanded}
             >
-              {islandExpanded ? (
+              {islandExpanded && islandContent ? (
+                islandContent
+              ) : islandExpanded ? (
                 <div className="iphone__island-note">
                   <img
                     src="/brand-jellyfish-white.png"

@@ -177,10 +177,10 @@
   height: 10px;
   flex: 0 0 auto;
   background:
-    linear-gradient(#111, #111) 0 100% / 18% 40% no-repeat,
-    linear-gradient(#111, #111) 28% 100% / 18% 55% no-repeat,
-    linear-gradient(#111, #111) 56% 100% / 18% 75% no-repeat,
-    linear-gradient(#111, #111) 84% 100% / 18% 100% no-repeat;
+    linear-gradient(currentColor, currentColor) 0 100% / 18% 40% no-repeat,
+    linear-gradient(currentColor, currentColor) 28% 100% / 18% 55% no-repeat,
+    linear-gradient(currentColor, currentColor) 56% 100% / 18% 75% no-repeat,
+    linear-gradient(currentColor, currentColor) 84% 100% / 18% 100% no-repeat;
 }
 
 .iphone__network {
@@ -203,7 +203,7 @@
   display: inline-block;
   width: 22px;
   height: 10px;
-  border: 1.5px solid #111;
+  border: 1.5px solid currentColor;
   border-radius: 2px;
   position: relative;
   box-sizing: border-box;
@@ -217,7 +217,7 @@
   top: 50%;
   width: 2px;
   height: 5px;
-  background: #111;
+  background: currentColor;
   border-radius: 0 1px 1px 0;
   transform: translateY(-50%);
 }
@@ -250,4 +250,34 @@
   transform: translateX(-50%);
   opacity: 0.85;
   z-index: 6;
+}
+
+/* 大尺寸 Live Activity：可交互 */
+.iphone__island.is-large {
+  width: calc(100% - 20px);
+  height: 178px;
+  border-radius: 38px;
+  padding: 18px 18px 16px;
+  place-items: stretch;
+  pointer-events: auto;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+}
+
+/* 深色模式：状态栏浮在壁纸上，白字，无割裂 */
+.iphone--dark .iphone__bezel {
+  background: #0b1020;
+  color: #fff;
+}
+
+.iphone--dark .iphone__status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  color: #fff;
+}
+
+.iphone--dark .iphone__home {
+  background: #fff;
+  opacity: 0.7;
 }

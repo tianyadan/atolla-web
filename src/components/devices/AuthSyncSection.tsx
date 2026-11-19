@@ -6,17 +6,18 @@ import IPhoneFrame from '../phone/IPhoneFrame'
 import { jellyForAuth, type AuthPhase } from '../mac/macChats'
 import ContinuityStage from './ContinuityStage'
 import IPhoneAuthScreen from './IPhoneAuthScreen'
+import { IslandAuthCard, IslandAuthResult } from './IPhoneIslandAuth'
 import './AuthSyncSection.css'
 
 /**
  * 命令授权 Continuity 演示。
- * iPhone：Island 展开通知 → 停留 1.5s → 收起 → 再滑出授权 sheet（不同时叠加）。
+ * iPhone：灵动岛展开为可交互的授权 Live Activity，直接在岛上允许 / 拒绝；
+ * 结果以横幅回执显示后收起。
  */
 export default function AuthSyncSection() {
   const { t } = useI18n()
   const [phase, setPhase] = useState<AuthPhase>('idle')
-  const [islandExpanded, setIslandExpanded] = useState(false)
-  const [sheetVisible, setSheetVisible] = useState(false)
+  const [island, setIsland] = useState<'none' | 'auth' | 'result'>('none')
   const [loopKey, setLoopKey] = useState(0)
   const autoRef = useRef(true)
   const timers = useRef<number[]>([])
@@ -47,39 +48,36 @@ export default function AuthSyncSection() {
     timers.current.push(id)
   }
 
-  /** pending：先 Island 1.5s，再 sheet */
+  /** pending：灵动岛展开为授权 Live Activity */
   const enterPendingUi = useCallback(() => {
     setPhase('pending')
-    setSheetVisible(false)
-    setIslandExpanded(true)
-    schedule(() => {
-      setIslandExpanded(false)
-      schedule(() => setSheetVisible(true), 380)
-    }, 1500)
+    setIsland('auth')
+  }, [])
+
+  /** 结果回执：岛收成横幅 2.4s 后收起 */
+  const resolve = useCallback((next: 'approved' | 'denied') => {
+    setPhase(next)
+    setIsland('result')
+    schedule(() => setIsland('none'), 2400)
   }, [])
 
   const allow = useCallback(() => {
     autoRef.current = false
     clearTimers()
-    setIslandExpanded(false)
-    setSheetVisible(true)
-    setPhase('approved')
-  }, [])
+    resolve('approved')
+  }, [resolve])
 
   const deny = useCallback(() => {
     autoRef.current = false
     clearTimers()
-    setIslandExpanded(false)
-    setSheetVisible(true)
-    setPhase('denied')
-  }, [])
+    resolve('denied')
+  }, [resolve])
 
   const replay = () => {
     clearTimers()
     autoRef.current = true
     setPhase('idle')
-    setIslandExpanded(false)
-    setSheetVisible(false)
+    setIsland('none')
     setLoopKey((n) => n + 1)
   }
 
@@ -92,26 +90,23 @@ export default function AuthSyncSection() {
       if (cancelled || cycle.current !== gen || !autoRef.current) return
       clearTimers()
       setPhase('idle')
-      setIslandExpanded(false)
-      setSheetVisible(false)
+      setIsland('none')
 
       schedule(() => {
         if (cancelled || cycle.current !== gen || !autoRef.current) return
         enterPendingUi()
       }, 1400)
 
-      // island 1.5s + collapse + sheet hold, then auto-approve
+      // 岛上停留 4s 等待点击，无操作则自动允许
       schedule(() => {
         if (cancelled || cycle.current !== gen || !autoRef.current) return
-        setIslandExpanded(false)
-        setSheetVisible(true)
-        setPhase('approved')
-      }, 1400 + 1500 + 380 + 2800)
+        resolve('approved')
+      }, 1400 + 4000)
 
       schedule(() => {
         if (cancelled || cycle.current !== gen || !autoRef.current) return
         run()
-      }, 1400 + 1500 + 380 + 2800 + 2800)
+      }, 1400 + 4000 + 2400 + 1600)
     }
 
     run()
@@ -119,7 +114,7 @@ export default function AuthSyncSection() {
       cancelled = true
       clearTimers()
     }
-  }, [loopKey, enterPendingUi, inView])
+  }, [loopKey, enterPendingUi, resolve, inView])
 
   const jelly = jellyForAuth(phase)
   const macNotifyShow = phase === 'pending'
@@ -169,16 +164,18 @@ export default function AuthSyncSection() {
           <IPhoneFrame
             label={t('auth.iphoneLabel')}
             className="auth-sync__phone"
-            islandExpanded={islandExpanded}
-            islandTitle={t('agent.team.fullstack')}
-            islandSubtitle={t('auth.islandSubtitle')}
+            tone="dark"
+            islandExpanded={island !== 'none'}
+            islandSize={island === 'auth' ? 'large' : 'banner'}
+            islandContent={
+              island === 'auth' ? (
+                <IslandAuthCard phase={phase} onAllow={allow} onDeny={deny} />
+              ) : island === 'result' ? (
+                <IslandAuthResult phase={phase} />
+              ) : null
+            }
           >
-            <IPhoneAuthScreen
-              phase={phase}
-              sheetVisible={sheetVisible}
-              onAllow={allow}
-              onDeny={deny}
-            />
+            <IPhoneAuthScreen />
           </IPhoneFrame>
         }
       />
