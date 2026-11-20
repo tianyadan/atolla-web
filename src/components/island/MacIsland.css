@@ -1,0 +1,206 @@
+/* —— Mac 灵动岛 section —— */
+.mac-island { margin-top: 2.5rem; display: grid; gap: 1.75rem; justify-items: center; }
+.mac-island__stage { width: 100%; max-width: 58rem; display: flex; justify-content: center; }
+
+/* MacBook：隐藏框架自带刘海，由灵动岛自身绘制（收起态即刘海） */
+.macbook--island .macbook__notch { display: none; }
+.macbook--island .macbook__screen { margin-top: 0; }
+
+.mi-full { position: absolute; inset: 0; overflow: hidden; }
+.mi-full__island {
+  position: absolute; top: 0; left: 50%; width: 0; height: 0; z-index: 10;
+  transform: scale(1.32); transform-origin: top center;
+}
+.mi-close {
+  position: relative; box-sizing: border-box; max-width: 100%; margin: 0 auto; overflow: hidden;
+  border-radius: 22px 22px 14px 14px; background: #050505;
+  border: 6px solid #16171a; border-bottom-width: 0;
+  box-shadow: 0 24px 50px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+.mi-close__canvas { position: absolute; top: 0; left: 0; width: 380px; height: 300px; transform-origin: top left; }
+.mi-close .mi-island-wrap { position: absolute; top: 0; left: 50%; }
+.mi-close::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 56px; pointer-events: none;
+  background: linear-gradient(180deg, rgba(11,13,16,0), rgba(11,13,16,0.55));
+}
+
+/* —— 桌面：菜单栏 + 编辑器（用户专注于其它窗口） —— */
+.mi-desk {
+  position: absolute; inset: 0; overflow: hidden; color: #1d1d1f; text-align: left;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif;
+  background:
+    radial-gradient(120% 90% at 15% 0%, #b9e6ee 0%, rgba(185,230,238,0) 60%),
+    radial-gradient(90% 80% at 100% 100%, #2a7d8c 0%, rgba(42,125,140,0) 70%),
+    linear-gradient(160deg, #6fb7c4 0%, #2d6f7d 55%, #173f4a 100%);
+}
+.mi-menubar {
+  position: absolute; top: 0; left: 0; right: 0; height: 28px; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between; padding: 0 14px;
+  font-size: 12.5px; font-weight: 500; letter-spacing: 0;
+  background: rgba(246, 248, 250, 0.62); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 0.5px 0 rgba(0,0,0,0.08);
+}
+.mi-menubar__left, .mi-menubar__right { display: flex; align-items: center; gap: 15px; white-space: nowrap; }
+.mi-menubar__left b { font-weight: 700; }
+.mi-menubar__left span { font-weight: 450; }
+.mi-batt { width: 22px; height: 11px; border: 1.2px solid rgba(0,0,0,0.75); border-radius: 3px; padding: 1px; position: relative; }
+.mi-batt::after { content: ''; position: absolute; right: -3.5px; top: 3px; width: 1.6px; height: 3.5px; background: rgba(0,0,0,0.6); border-radius: 0 1px 1px 0; }
+.mi-batt i { display: block; height: 100%; width: 72%; background: #1d1d1f; border-radius: 1px; }
+
+.mi-window {
+  position: absolute; top: 46px; left: 44px; right: 44px; bottom: 26px;
+  border-radius: 12px; overflow: hidden; background: #fbfbfc;
+  box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 22px 50px rgba(5,25,32,0.35);
+  display: flex; flex-direction: column;
+}
+.mi-close .mi-window { top: 44px; left: 14px; right: 14px; bottom: -30px; }
+.mi-window__bar {
+  height: 34px; flex: none; display: flex; align-items: center; gap: 12px; padding: 0 14px;
+  background: #f1f2f4; border-bottom: 1px solid #e3e4e8;
+}
+.mi-dots { display: flex; gap: 7px; }
+.mi-dots i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.15); }
+.mi-dots i:nth-child(2) { background: #febc2e; }
+.mi-dots i:nth-child(3) { background: #28c840; }
+.mi-window__title { flex: 1; text-align: center; margin-right: 50px; font-size: 12px; color: #6e6e73; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mi-window__body { flex: 1; display: flex; min-height: 0; }
+.mi-side {
+  width: 170px; flex: none; padding: 10px 0; background: #f6f6f8; border-right: 1px solid #e6e7ea;
+  display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: #3a3a3c;
+}
+.mi-side small { padding: 0 12px 6px; font-size: 10px; letter-spacing: 0.08em; color: #8e8e93; font-weight: 600; }
+.mi-side span { padding: 3px 10px; white-space: nowrap; }
+.mi-side span.is-on { background: #dfeef1; color: #0b5563; font-weight: 600; }
+.mi-code { flex: 1; padding: 12px 0; font: 12.5px/1.72 'SF Mono', ui-monospace, Menlo, Consolas, monospace; color: #24292f; overflow: hidden; }
+.mi-code__line { display: flex; white-space: pre; min-height: 1.72em; }
+.mi-code__line em { width: 40px; flex: none; text-align: right; padding-right: 16px; font-style: normal; color: #b0b3b8; }
+.c-k { color: #cf222e; } .c-s { color: #0a3069; } .c-f { color: #8250df; } .c-n { color: #0550ae; } .c-t { color: #116329; } .c-a { color: #953800; } .c-p { color: #24292f; }
+.mi-caret { display: inline-block; width: 1.5px; height: 1.2em; margin-left: 1px; background: #0969da; vertical-align: -0.2em; animation: mi-blink 1.05s steps(1) infinite; }
+@keyframes mi-blink { 50% { opacity: 0; } }
+
+/* —— 灵动岛本体 —— */
+.mi-island-wrap { position: relative; width: 0; height: 0; }
+.mi-island {
+  --w: 132px; --h: 28px; --r: 9px;
+  position: absolute; top: 0; left: 0; transform: translateX(-50%);
+  width: var(--w); height: var(--h); padding: 0; margin: 0; border: 0;
+  background: #000; color: #fff; cursor: pointer; font: inherit; text-align: left;
+  border-radius: 0 0 var(--r) var(--r);
+  transition:
+    width 0.38s cubic-bezier(0.3, 0.9, 0.3, 1),
+    height 0.38s cubic-bezier(0.3, 0.9, 0.3, 1),
+    border-radius 0.38s cubic-bezier(0.3, 0.9, 0.3, 1),
+    box-shadow 0.38s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+.mi-island:focus-visible { outline: 2px solid #6ee7f0; outline-offset: 3px; }
+.is-merging .mi-island { --w: 140px; transition-duration: 0.28s; }
+.is-expanded .mi-island {
+  --w: 318px; --r: 22px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.38), 0 0 0 0.5px rgba(255,255,255,0.06);
+  transition:
+    width 0.56s cubic-bezier(0.34, 1.28, 0.5, 1),
+    height 0.56s cubic-bezier(0.34, 1.28, 0.5, 1),
+    border-radius 0.5s cubic-bezier(0.34, 1.2, 0.5, 1),
+    box-shadow 0.5s ease;
+}
+/* 刘海两侧的内凹圆角（MacNotchShape） */
+.mi-flare { position: absolute; top: 0; width: 7px; height: 7px; pointer-events: none; }
+.mi-flare--l { left: -7px; background: radial-gradient(circle at 0 100%, transparent 6.6px, #000 7px); }
+.mi-flare--r { right: -7px; background: radial-gradient(circle at 100% 100%, transparent 6.6px, #000 7px); }
+
+.mi-island__content {
+  position: absolute; top: 0; left: 50%; width: 318px; transform: translateX(-50%) translateY(4px) scale(0.97);
+  transform-origin: top center; opacity: 0; display: block; overflow: hidden; height: 100%;
+  transition: opacity 0.16s ease, transform 0.3s ease;
+}
+.mi-island { overflow: visible; }
+.mi-island__clip { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; display: block; }
+.is-expanded .mi-island__content { opacity: 1; transform: translateX(-50%); transition: opacity 0.3s ease 0.14s, transform 0.45s cubic-bezier(0.34, 1.2, 0.5, 1) 0.1s; }
+.mi-island__head { display: flex; justify-content: flex-end; align-items: center; height: 28px; padding: 0 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.mi-x { font-size: 14px; line-height: 1; color: rgba(255,255,255,0.45); font-weight: 600; }
+.mi-island__list { display: block; padding: 2px 0 6px; }
+.mi-row {
+  display: flex; align-items: center; gap: 9px; height: 40px; padding: 0 12px;
+  opacity: 0; transform: translateY(-4px); transition: opacity 0.25s ease, transform 0.35s ease;
+}
+.is-expanded .mi-row { opacity: 1; transform: none; }
+.mi-row__icon { width: 22px; height: 22px; flex: none; display: grid; place-items: center; }
+.mi-row__text { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.mi-row__text b { font-size: 12.5px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mi-row__text small { font-size: 10.5px; color: rgba(255,255,255,0.52); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mi-row__status { flex: none; font-size: 10px; font-weight: 650; letter-spacing: 0.01em; }
+.mi-empty { display: grid; justify-items: center; gap: 6px; padding: 12px 0 6px; font-size: 10.5px; color: rgba(255,255,255,0.42); }
+.mi-empty__icon { width: 20px; height: 10px; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 2.5px; }
+.mi-empty__icon i { width: 2px; height: 2px; border-radius: 50%; background: rgba(255,255,255,0.35); }
+
+/* 状态色：与 AtollaIsland statusColor 一致 */
+.mi-c--running { color: #b86bfa; }
+.mi-c--approval { color: #ffd161; }
+.mi-c--error { color: #ff7a7a; }
+.mi-c--completed { color: #52db7a; }
+.mi-c--idle { color: rgba(255,255,255,0.45); }
+.mi-sym circle { fill: currentColor; }
+.mi-sym--error { color: #ff7a7a; } .mi-sym--approval { color: #ffd161; } .mi-sym--completed { color: #52db7a; }
+
+/* 右侧角标（副岛）：圆形 + 水母/图标 + 事件数 */
+.mi-badge {
+  position: absolute; top: 3px; left: 76px; width: 22px; height: 22px; border-radius: 50%;
+  background: #000; box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.14);
+  display: flex; align-items: center; justify-content: center; gap: 0;
+  transition: transform 0.3s cubic-bezier(0.5, 0, 0.6, 1), opacity 0.3s ease;
+  animation: mi-badge-in 0.45s cubic-bezier(0.34, 1.5, 0.5, 1);
+}
+.mi-badge em { font-style: normal; font-size: 7.5px; font-weight: 800; margin-left: 0.5px; }
+.mi-badge .jelly-avatar, .mi-badge svg { flex: none; }
+.is-merging .mi-badge { transform: translateX(-24px) scale(0.55); opacity: 0.2; }
+.is-expanded .mi-badge { transform: translateX(-24px) scale(0.4); opacity: 0; transition-duration: 0.12s; }
+@keyframes mi-badge-in { from { transform: translateX(-18px) scale(0.4); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* —— 控件 —— */
+.mac-island__controls { display: grid; justify-items: center; gap: 0.85rem; width: 100%; }
+.mi-pills {
+  display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 0.35rem; padding: 0.3rem;
+  border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+}
+.mi-pill {
+  display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.45rem 0.95rem; border-radius: 999px;
+  border: 0; background: transparent; color: var(--ink-muted); font: inherit; font-size: 0.86rem; cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.mi-pill:hover { color: #fff; }
+.mi-pill.is-on { background: rgba(255,255,255,0.12); color: #fff; }
+.mi-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.mi-pill.is-on .mi-c--running { box-shadow: 0 0 8px #b86bfa; }
+.mi-caption { margin: 0; min-height: 3em; max-width: 36rem; text-align: center; font-size: 0.92rem; line-height: 1.6; color: var(--ink-muted); }
+
+.mi-points {
+  list-style: none; margin: 0.5rem auto 0; padding: 0; max-width: 960px; width: 100%;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; text-align: left;
+}
+.mi-points li { display: flex; gap: 0.85rem; padding: 1.1rem 1.15rem; border-radius: 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+.mi-points__num { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 0.8rem; font-weight: 700; color: #05080f; background: #6ee7f0; }
+.mi-points strong { display: block; font-size: 0.98rem; color: #fff; margin-bottom: 0.25rem; }
+.mi-points p { margin: 0; font-size: 0.86rem; line-height: 1.6; color: var(--ink-muted); }
+.mi-meta { margin: -0.5rem 0 0; font-size: 0.78rem; color: var(--ink-faint, rgba(255,255,255,0.4)); text-align: center; }
+
+#island .section__inner { text-align: center; }
+#island .section__lede { margin-left: auto; margin-right: auto; }
+.section--island { align-items: flex-start; min-height: auto; padding-top: clamp(3.5rem, 9vh, 6.5rem); padding-bottom: clamp(3.5rem, 9vh, 6.5rem); }
+
+@media (max-width: 760px) {
+  .mac-island { margin-top: 1.75rem; gap: 1.25rem; }
+  .mi-points { grid-template-columns: 1fr; }
+  .mi-pill { padding: 0.42rem 0.75rem; font-size: 0.82rem; }
+  .mi-pills { border-radius: 20px; }
+  .mi-caption { font-size: 0.86rem; }
+}
+@media (max-width: 520px) {
+  .mi-pills { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); width: 100%; gap: 0.15rem; padding: 0.25rem; border-radius: 16px; }
+  .mi-pill { flex-direction: column; gap: 0.3rem; padding: 0.5rem 0.2rem; font-size: 0.76rem; border-radius: 12px; white-space: nowrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mi-island, .mi-island__content, .mi-row, .mi-badge { transition: none !important; animation: none !important; }
+  .mi-caret { animation: none; }
+}

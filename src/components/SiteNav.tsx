@@ -50,6 +50,7 @@ export default function SiteNav() {
     { href: '#relay', label: t('nav.relay') },
     { href: '#devices', label: t('nav.devices') },
     { href: '#authorize', label: t('nav.authorize') },
+    { href: '#island', label: t('nav.island') },
     { href: '#engines', label: t('nav.engines') },
     { href: '#avatars', label: t('nav.avatars') },
   ]

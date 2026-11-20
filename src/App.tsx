@@ -13,6 +13,7 @@ import ParallaxSection from './components/ParallaxSection'
 import SiteFooter from './components/SiteFooter'
 import SiteNav from './components/SiteNav'
 import RelaySection from './components/RelaySection'
+import MacIslandSection from './components/island/MacIslandSection'
 import { useI18n } from './i18n/I18nProvider'
 import './App.css'
 
@@ -118,6 +119,19 @@ export default function App() {
             <p className="section__lede section__lede--wide">{t('auth.lede')}</p>
           </FadeContent>
           <AuthSyncSection />
+        </div>
+      </section>
+
+      <section className="section section--island" id="island" aria-labelledby="island-title">
+        <div className="section__inner">
+          <FadeContent blur duration={0.9} threshold={0.12}>
+            <p className="section__eyebrow">{t('island.eyebrow')}</p>
+            <h2 id="island-title" className="section__title section__title--balanced">
+              {t('island.title')}
+            </h2>
+            <p className="section__lede section__lede--wide">{t('island.lede')}</p>
+          </FadeContent>
+          <MacIslandSection />
         </div>
       </section>
 

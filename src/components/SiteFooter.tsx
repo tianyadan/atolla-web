@@ -37,6 +37,9 @@ export default function SiteFooter() {
                 <a {...anchor('#authorize')}>{t('nav.authorize')}</a>
               </li>
               <li>
+                <a {...anchor('#island')}>{t('nav.island')}</a>
+              </li>
+              <li>
                 <a {...anchor('#engines')}>{t('nav.engines')}</a>
               </li>
               <li>
