@@ -59,13 +59,13 @@ export function pickSpriteScale(size: number, dpr = 1): 1 | 2 | 3 {
 }
 
 /**
- * 精灵图相对 URL（配合 Vite base: './'）
+ * 精灵图 URL：基于 Vite BASE_URL，保证 /docs/* 等子路径下同样可用
  * 仅提供 @32 / @48，scale 1 回退到 32。
  */
 export function jellySpriteUrl(color: string, scale: 1 | 2 | 3): string {
   const c: JellyColor = normalizeJellyColor(color)
   const px = scale === 1 ? 32 : JELLY_CELL * scale
-  return `./jelly-sprites/jelly-${c}@${px}.png`
+  return `${import.meta.env.BASE_URL}jelly-sprites/jelly-${c}@${px}.png`
 }
 
 /** 是否应跳过位移动画 */

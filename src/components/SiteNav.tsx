@@ -3,6 +3,7 @@ import { RELEASE_URL } from './Download'
 import BrandLogo from './BrandLogo'
 import GitHubMark, { GITHUB_API_REPO, GITHUB_REPO_URL } from './GitHubMark'
 import { useI18n } from '../i18n/I18nProvider'
+import { isDocsPath, onLinkClick, usePathname } from '../router'
 
 /** 顶部固定磨砂导航：Logo · 锚点 · 中/EN · GitHub star · CTA */
 export default function SiteNav() {
@@ -10,6 +11,8 @@ export default function SiteNav() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [stars, setStars] = useState<number | null>(null)
+  const path = usePathname()
+  const onDocs = isDocsPath(path)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -43,25 +46,45 @@ export default function SiteNav() {
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
 
-  const links = [
+  const anchors = [
     { href: '#relay', label: t('nav.relay') },
     { href: '#devices', label: t('nav.devices') },
     { href: '#authorize', label: t('nav.authorize') },
     { href: '#engines', label: t('nav.engines') },
     { href: '#avatars', label: t('nav.avatars') },
   ]
+  // 文档页里的锚点要先回首页再滚动；首页内保持原生锚点
+  const links = [
+    ...anchors.map((a) => ({ ...a, href: onDocs ? `/${a.href}` : a.href, route: onDocs, active: false })),
+    { href: '/docs', label: t('nav.docs'), route: true, active: onDocs },
+  ]
+  const close = () => setOpen(false)
+  const linkProps = (link: (typeof links)[number]) => ({
+    href: link.href,
+    className: link.active ? 'is-active' : undefined,
+    'aria-current': link.active ? ('page' as const) : undefined,
+    onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (link.route) onLinkClick(e, link.href, close)
+      else close()
+    },
+  })
 
   return (
-    <header className={`site-nav-bar ${scrolled ? 'is-scrolled' : ''} ${open ? 'is-open' : ''}`}>
+    <header className={`site-nav-bar ${scrolled || onDocs ? 'is-scrolled' : ''} ${open ? 'is-open' : ''} ${onDocs ? 'site-nav-bar--docs' : ''}`}>
       <div className="site-nav">
-        <a className="site-nav__brand" href="#top" aria-label={t('nav.home')}>
+        <a
+          className="site-nav__brand"
+          href={onDocs ? '/' : '#top'}
+          aria-label={t('nav.home')}
+          onClick={(e) => (onDocs ? onLinkClick(e, '/', close) : undefined)}
+        >
           <BrandLogo size={22} />
           <span>Atolla</span>
         </a>
 
         <nav className="site-nav__center" aria-label={t('nav.home')}>
           {links.map((link) => (
-            <a key={link.href} href={link.href} onClick={() => setOpen(false)}>
+            <a key={link.href} {...linkProps(link)}>
               {link.label}
             </a>
           ))}
@@ -122,7 +145,7 @@ export default function SiteNav() {
 
       <div className={`site-nav__drawer ${open ? 'is-open' : ''}`}>
         {links.map((link) => (
-          <a key={link.href} href={link.href} onClick={() => setOpen(false)}>
+          <a key={link.href} {...linkProps(link)}>
             {link.label}
           </a>
         ))}
