@@ -12,17 +12,17 @@
   transform: scale(1.32); transform-origin: top center;
 }
 .mi-close {
-  position: relative; box-sizing: border-box; max-width: 100%; margin: 0 auto; overflow: hidden;
-  border-radius: 22px 22px 14px 14px; background: #050505;
-  border: 6px solid #16171a; border-bottom-width: 0;
-  box-shadow: 0 24px 50px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05);
+  /* 移动端特写：完整的黑色屏幕边框（MacBook 黑边），刘海从顶部边框里长出来 */
+  position: relative; box-sizing: border-box; max-width: 100%; margin: 0 auto; overflow: hidden; isolation: isolate;
+  border: 8px solid #050506; border-radius: 22px; background: #050506;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 24px 50px rgba(0,0,0,0.5);
+  -webkit-mask-image: -webkit-radial-gradient(white, black); /* iOS Safari：圆角裁切 + transform 子元素 */
 }
-.mi-close__canvas { position: absolute; top: 0; left: 0; width: 380px; height: 300px; transform-origin: top left; }
-.mi-close .mi-island-wrap { position: absolute; top: 0; left: 50%; }
-.mi-close::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 56px; pointer-events: none;
-  background: linear-gradient(180deg, rgba(11,13,16,0), rgba(11,13,16,0.55));
-}
+.mi-close__canvas { position: absolute; top: 0; left: 0; width: 380px; height: 300px; transform-origin: top left; overflow: hidden; border-radius: 6px; }
+/* 关键：岛必须压在菜单栏（z-index:2）之上，否则展开态顶部与 × 会被菜单栏盖住 */
+.mi-close .mi-island-wrap { position: absolute; top: 0; left: 50%; z-index: 10; }
+.mi-close .mi-menubar { padding: 0 12px; }
+.mi-close .mi-menubar__right { gap: 8px; }
 
 /* —— 桌面：菜单栏 + 编辑器（用户专注于其它窗口） —— */
 .mi-desk {
@@ -53,7 +53,8 @@
   box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 22px 50px rgba(5,25,32,0.35);
   display: flex; flex-direction: column;
 }
-.mi-close .mi-window { top: 44px; left: 14px; right: 14px; bottom: -30px; }
+.mi-close .mi-window { top: 44px; left: 14px; right: 14px; bottom: 16px; }
+.mi-close .mi-code { padding-top: 10px; }
 .mi-window__bar {
   height: 34px; flex: none; display: flex; align-items: center; gap: 12px; padding: 0 14px;
   background: #f1f2f4; border-bottom: 1px solid #e3e4e8;

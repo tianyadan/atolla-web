@@ -164,7 +164,7 @@ function Desktop({ compact, zh }: { compact: boolean; zh: boolean }) {
             </svg>
           )}
           <span className="mi-batt"><i /></span>
-          <span>{zh ? '周五 14:32' : 'Fri 2:32 PM'}</span>
+          <span className="mi-clock">{compact ? '14:32' : zh ? '周五 14:32' : 'Fri 2:32 PM'}</span>
         </div>
       </div>
       <div className="mi-window">
@@ -184,7 +184,7 @@ function Desktop({ compact, zh }: { compact: boolean; zh: boolean }) {
             </div>
           )}
           <div className="mi-code">
-            {CODE.map((line, i) => (
+            {(compact ? CODE.slice(0, 9) : CODE).map((line, i) => (
               <div key={i} className="mi-code__line">
                 <em>{i + 1}</em>
                 {line.map(([c, txt], j) => (
@@ -299,7 +299,7 @@ export default function MacIslandSection() {
     const update = () => {
       const w = el.clientWidth
       setCompact(w < 640)
-      setCloseScale(Math.min(1.25, (Math.min(w, 475) - 12) / 380))
+      setCloseScale(Math.min(1.25, (Math.min(w, 491) - 16) / 380))
     }
     update()
     const ro = new ResizeObserver(update)
@@ -358,7 +358,7 @@ export default function MacIslandSection() {
     <div className="mac-island" ref={rootRef}>
       <div className="mac-island__stage" ref={stageRef}>
         {compact ? (
-          <div className="mi-close" style={{ width: 380 * closeScale + 12, height: 300 * closeScale }}>
+          <div className="mi-close" style={{ width: 380 * closeScale + 16, height: 300 * closeScale + 16 }}>
             <div className="mi-close__canvas" style={{ transform: `scale(${closeScale})` }}>
               <Desktop compact zh={zh} />
               {island}
